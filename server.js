@@ -5,7 +5,7 @@ const mongoose = require('mongoose'); // Handles the database pipeline connectio
 const app = express();
 
 const PORT = 3000;
-const HOST = '127.0.0.1';
+const HOST = '0.0.0.0';
 
 // 🛑 STEP 1: Paste the connection string you copied from the MongoDB Drivers modal here:
 // 🛑 REPLACE your line 10 configuration completely with this updated string setup:
