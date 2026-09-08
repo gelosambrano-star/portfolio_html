@@ -267,3 +267,67 @@ body {
 /* ==========================================================================
    7. DOCUMENTATION DEEP DIVE MODAL SLIDES
    ========================================================================== */
+/* ==========================================================================
+   📱 MOBILE & MOBILE RESPONSIVE CANVAS INTERFACES (MAX-WIDTH: 768px)
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+    
+    /* 1. Global Page Layout Padding Adjustments */
+    body {
+        padding: 0 4%; /* Shrinks outer whitespace gaps to maximize touch targets */
+    }
+
+    /* 2. Navigation Architecture Resizing */
+    .navbar-container {
+        padding: 1rem 5%;
+        flex-direction: column; /* Stacks your logo above links if space collapses */
+        gap: 0.75rem;
+    }
+    .nav-links {
+        gap: 1.25rem;
+        font-size: 0.9rem;
+    }
+
+    /* 3. Hero Section Typography Balancing */
+    .hero-section {
+        padding: 6rem 1rem 3rem 1rem; /* Lowers top margins so navbar won't overlap */
+    }
+    .hero-content h1 {
+        font-size: 2.25rem; /* Shrinks "Hi, I'm Angelo Sambrano" from giant size to fit clean */
+        line-height: 1.2;
+        letter-spacing: -0.5px;
+    }
+    .hero-content h2 {
+        font-size: 1.25rem; /* Resizes the subheader subtitle */
+        margin-top: 0.5rem;
+    }
+    .hero-content p {
+        font-size: 0.95rem; /* Optimizes the paragraph text row readability */
+        line-height: 1.5;
+    }
+    .hero-actions {
+        flex-direction: column; /* Stacks your blue buttons vertically instead of side-by-side */
+        width: 100%;
+        gap: 0.75rem;
+    }
+    .hero-actions .btn {
+        width: 100%; /* Stretches buttons to full width for easy thumb taps */
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    /* 4. Project Display Matrix & Grid Refactor */
+    .project-grid {
+        grid-template-columns: 1fr !important; /* Forces layout cards into a single clean vertical column */
+        gap: 1.25rem;
+    }
+    .project-card {
+        padding: 1.5rem;
+    }
+
+    /* 5. Contact Form Structure Tuning */
+    .form-row {
+        grid-template-columns: 1fr !important; /* Stacks Name and Email inputs vertically */
+        gap: 1rem;
+    }
+}
