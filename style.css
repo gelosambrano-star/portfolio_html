@@ -270,64 +270,63 @@ body {
 /* ==========================================================================
    📱 MOBILE & MOBILE RESPONSIVE CANVAS INTERFACES (MAX-WIDTH: 768px)
    ========================================================================== */
-@media screen and (max-width: 768px) {
-    
-    /* 1. Global Page Layout Padding Adjustments */
-    body {
-        padding: 0 4%; /* Shrinks outer whitespace gaps to maximize touch targets */
-    }
+/* ==========================================================
+   ✨ DESKTOP HOVER EFFECT RULES
+   ========================================================== */
+.btn:hover {
+    background: white;
+    color: black;
+} /* <-- ✅ FIXED: This closes your hover style perfectly! */
 
-    /* 2. Navigation Architecture Resizing */
+
+/* ==========================================================
+   📱 MOBILE RESPONSIVE ADAPTIVE INTERFACES (MAX-WIDTH: 768px)
+   ========================================================== */
+@media screen and (max-width: 768px) {
+    body {
+        padding: 0 4%;
+    }
     .navbar-container {
         padding: 1rem 5%;
-        flex-direction: column; /* Stacks your logo above links if space collapses */
+        flex-direction: column;
         gap: 0.75rem;
     }
     .nav-links {
         gap: 1.25rem;
         font-size: 0.9rem;
     }
-
-    /* 3. Hero Section Typography Balancing */
     .hero-section {
-        padding: 6rem 1rem 3rem 1rem; /* Lowers top margins so navbar won't overlap */
+        padding: 6rem 1rem 3rem 1rem;
     }
     .hero-content h1 {
-        font-size: 2.25rem; /* Shrinks "Hi, I'm Angelo Sambrano" from giant size to fit clean */
+        font-size: 2.25rem;
         line-height: 1.2;
-        letter-spacing: -0.5px;
     }
     .hero-content h2 {
-        font-size: 1.25rem; /* Resizes the subheader subtitle */
-        margin-top: 0.5rem;
+        font-size: 1.25rem;
     }
     .hero-content p {
-        font-size: 0.95rem; /* Optimizes the paragraph text row readability */
-        line-height: 1.5;
+        font-size: 0.95rem;
     }
     .hero-actions {
-        flex-direction: column; /* Stacks your blue buttons vertically instead of side-by-side */
+        flex-direction: column;
         width: 100%;
         gap: 0.75rem;
     }
     .hero-actions .btn {
-        width: 100%; /* Stretches buttons to full width for easy thumb taps */
+        width: 100%;
         text-align: center;
-        box-sizing: border-box;
     }
-
-    /* 4. Project Display Matrix & Grid Refactor */
     .project-grid {
-        grid-template-columns: 1fr !important; /* Forces layout cards into a single clean vertical column */
+        grid-template-columns: 1fr !important;
         gap: 1.25rem;
     }
     .project-card {
         padding: 1.5rem;
     }
-
-    /* 5. Contact Form Structure Tuning */
     .form-row {
-        grid-template-columns: 1fr !important; /* Stacks Name and Email inputs vertically */
+        grid-template-columns: 1fr !important;
         gap: 1rem;
     }
-}
+} /* <-- ✅ FIXED: This closes your media query container! */
+
