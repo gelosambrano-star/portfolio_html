@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Messages</title>
+    <style>
+        :root {
+            --bg-main: #030712;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --card-surface: rgba(17, 24, 39, 0.7);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --accent-alert: #ef4444; 
+        }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            padding: 4rem 8%;
+            margin: 0;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--border-glass);
+            padding-bottom: 1.5rem;
+        }
+        h1 { font-size: 2.25rem; font-weight: 800; letter-spacing: -0.5px; }
+        .btn-group { display: flex; gap: 1rem; }
+        .back-btn {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: 1px solid var(--border-glass);
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .back-btn:hover { color: var(--text-primary); background: var(--card-surface); }
+        
+        .messages-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .message-card {
+            background: var(--card-surface);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass);
+            padding: 2rem;
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+        .card-content-block { flex-grow: 1; }
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            border-bottom: 1px dashed var(--border-glass);
+            padding-bottom: 0.5rem;
+        }
+        .user-name { font-weight: 700; color: #3b82f6; font-size: 1rem; }
+        .message-body { line-height: 1.6; color: #e5e7eb; white-space: pre-wrap; }
+        
+        /* Action UI Deletion Triggers */
+        .delete-btn {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--accent-alert);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            align-self: center;
+        }
+        .delete-btn:hover {
+            background: var(--accent-alert);
+            color: white;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+        }
+        .empty-state { text-align: center; color: var(--text-secondary); font-size: 1.2rem; margin-top: 5rem; }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <h1>Inbound Signal Console</h1>
+        <div class="btn-group">
+            <button onclick="clearSessionToken()" class="back-btn" style="cursor:pointer;">Lock Console</button>
+            <a href="/" class="back-btn">← Back to Site</a>
+        </div>
+    </div>
+
+    <div id="messagesGrid" class="messages-container">
+        <p class="empty-state">Secure verification processing...</p>
+    </div>
+
+    <script>
+        // Check for persistent session password cache keys inside memory structures
+        let userToken = sessionStorage.getItem('adminToken');
+
+        if (!userToken) {
+            userToken = prompt("🔐 Authentication Entry Required. Input Security Password Key:");
+            if (userToken) {
+                sessionStorage.setItem('adminToken', userToken);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadDatabaseRecords();
+        });
+
+        // Query execution handler to retrieve cloud documents safely
+        function loadDatabaseRecords() {
+            const grid = document.getElementById('messagesGrid');
+
+            fetch('/api/messages', {
+                method: 'GET',
+                headers: { 'x-admin-password': userToken }
+            })
+            .then(response => {
+                if (response.status === 401) {
+                    sessionStorage.removeItem('adminToken');
+                    alert("Authentication execution rejected: Access Key Mismatch.");
+                    window.location.reload();
+                    throw new Error("Invalid key.");
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.length === 0) {
+                    grid.innerHTML = '<p class="empty-state">No messages logged in MongoDB yet.</p>';
+                    return;
+                }
+                grid.innerHTML = '';
+
+                data.forEach(item => {
+                    const dateStr = new Date(item.timestamp).toLocaleString();
+                    const cardHTML = `
+                        <div class="message-card" id="card-${item._index || item._id}">
+                            <div class="card-content-block">
+                                <div class="card-meta">
+                                    <div>From: <span class="user-name">${escapeHTML(item.name)}</span> (${escapeHTML(item.email)})</div>
+                                    <div>Received: ${dateStr}</div>
+                                </div>
+                                <div class="message-body">${escapeHTML(item.message)}</div>
+                            </div>
+                            <button class="delete-btn" onclick="triggerRecordWipe('${item._id}')">Erase Signal</button>
+                        </div>
+                    `;
+                    grid.innerHTML += cardHTML;
+                });
+            })
+            .catch(err => {
+                grid.innerHTML = '<p class="empty-state" style="color: var(--accent-alert);">System Gateway Isolation Active. Stored collection sets unreadable.</p>';
+            });
+        }
+
+        // Network transaction controller processing dynamic deletion sequences
+        function triggerRecordWipe(documentId) {
+            if (!confirm("⚠️ Destructive Override Confirmation. Wipe this document transaction trace from MongoDB permanent tables?")) return;
+
+            fetch(`/api/messages/${documentId}`, {
+                method: 'DELETE',
+                headers: { 'x-admin-password': userToken }
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.error) {
+                    alert(`System execution abort rejection: ${result.error}`);
+                } else {
+                    // Smoothly isolate and delete card view elements on interface layout canvas
+                    const visualCard = document.getElementById(`card-${documentId}`);
+                    if (visualCard) visualCard.remove();
+                    
+                    // Re-render baseline status indicators if all components clear out
+                    const remainingCards = document.querySelectorAll('.message-card');
+                    if (remainingCards.length === 0) {
+                        document.getElementById('messagesGrid').innerHTML = '<p class="empty-state">No messages logged in MongoDB yet.</p>';
+                    }
+                }
+            })
+            .catch(err => alert("Unable to fulfill execution sequence pipeline data wipe actions."));
+        }
+
+        function clearSessionToken() {
+            sessionStorage.removeItem('adminToken');
+            window.location.reload();
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+        }
+    </script>
+</body>
+</html>
