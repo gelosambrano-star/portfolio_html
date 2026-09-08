@@ -4,7 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose'); // Handles the database pipeline connection
 const app = express();
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const HOST = '0.0.0.0';
 
 // 🛑 STEP 1: Paste the connection string you copied from the MongoDB Drivers modal here:
