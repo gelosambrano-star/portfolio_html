@@ -3,140 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full-Stack Developer Portfolio</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Gelo Sambrano | Full-Stack Software Engineer</title>
+    <!-- Favicon Shortcut Patch: Keeps inspect console diagnostics clean -->
     <link rel="icon" href="data:,">
-
+    <!-- Google Fonts Infrastructure Link -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body data-theme="dark">
 
-    <!-- Decorative Background Ambient Glow Orbs -->
-    <div class="glow-orb orb-1"></div>
-    <div class="glow-orb orb-2"></div>
-
-    <!-- Navigation Bar -->
-    <nav class="navbar">
+    <!-- Global Navigation Architecture -->
+    <nav class="navbar-container">
         <div class="logo">
-            <span class="logo-bracket">&lt;</span>Dev<span class="logo-highlight">Journey</span> <span class="logo-bracket">/&gt;</span>
+            <span class="logo-bracket">&lt;</span>
+            <span class="logo-highlight">Gelo Sambrano</span>
+            <span class="logo-bracket">/&gt;</span>
         </div>
-        <ul class="nav-links">
-            <li><a href="#hero">Home</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#projects">Roadmap</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">☀️</button>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#roadmap">Roadmap</a>
+            <a href="#contact">Contact</a>
+            <button id="themeToggle" class="theme-switch-btn" aria-label="Toggle System Theme">☀️</button>
+        </div>
     </nav>
 
-    
-    <header id="hero" class="hero-section">
-        <div class="hero-content">
-            <div class="badge-container">
-                <span class="pulse-dot"></span>
-                <span class="badge-text">Available for Junior Roles & Internships</span>
-            </div>
-            <h1>Building Next-Gen <br><span class="gradient-text">Full-Stack Solutions</span></h1>
-            <p class="hero-subtext">Aspiring software engineer specializing in JavaScript ecosystems. Merging elegant frontends with robust, scalable server backends.</p>
-            <div class="cta-group">
-                <a href="#projects" class="btn btn-primary">Explore Roadmap</a>
-                <a href="#contact" class="btn btn-secondary">Let's Connect</a>
+    <!-- Main Hero Workspace Section -->
+    <header id="about" class="hero-section">
+        <div class="hero-content card-glass">
+            <div class="status-badge">🟢 Core Stack Live on Port 10000</div>
+            <h1>Hi, I'm <span class="text-gradient">Angelo Sambrano</span></h1>
+            <h2>Full-Stack Developer & Systems Architect</h2>
+            <p>Building high-performance, asynchronous web interfaces powered by Node.js, Express gateways, and secure cloud-hosted MongoDB Atlas document structures.</p>
+            <div class="hero-actions">
+                <a href="#contact" class="btn btn-primary">Initialize Connection</a>
+                <a href="#roadmap" class="btn btn-secondary">Explore Blueprint</a>
             </div>
         </div>
     </header>
 
-    <!-- Technical Skills Section -->
-    <section id="skills" class="skills-section">
+    <!-- Roadmap Iteration Dashboard Section -->
+    <section id="roadmap" class="roadmap-section">
         <div class="section-header">
-            <span class="section-tag">Capabilities</span>
-            <h2>My Core Ecosystem</h2>
+            <h2>Engineering Blueprint Roadmap</h2>
+            <p>Tracking full-stack architectural loops, system learning objectives, and dynamic project persistence components.</p>
         </div>
-        <div class="skills-grid">
-            <div class="skill-card">
-                <div class="skill-icon">🎨</div>
-                <h3>Frontend Architectures</h3>
-                <p>Crafting high-performance user interfaces using interactive layouts, components, and optimized styling scripts.</p>
-                <div class="mini-tags"><span>HTML5</span><span>CSS3</span><span>ES6 JS</span><span>React</span></div>
-            </div>
-            <div class="skill-card">
-                <div class="skill-icon">⚙️</div>
-                <h3>Backend Engineering</h3>
-                <p>Designing structured routing engines, secure endpoint architectures, middleware, and process microservices.</p>
-                <div class="mini-tags"><span>Node.js</span><span>Express</span><span>REST APIs</span><span>JWT</span></div>
-            </div>
-            <div class="skill-card">
-                <div class="skill-icon">💾</div>
-                <h3>Data & Operations</h3>
-                <p>Modeling documents, managing persistent transaction data, handling query updates, and source versioning control workflows.</p>
-                <div class="mini-tags"><span>MongoDB</span><span>SQL Basics</span><span>Git</span><span>GitHub</span></div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Engineering Roadmap Section -->
-    <section id="projects" class="projects-section">
-        <div class="section-header">
-            <span class="section-tag">Learning Milestone</span>
-            <h2>The Engineering Roadmap</h2>
-        </div>
-        
+        <!-- Dynamic Filter Console -->
         <div class="filter-wrapper">
-            <button class="filter-btn active" data-filter="all">All Specs</button>
-            <button class="filter-btn" data-filter="frontend">Frontend</button>
-            <button class="filter-btn" data-filter="fullstack">Full-Stack</button>
+            <button class="filter-btn active" data-filter="all">All Modules</button>
+            <button class="filter-btn" data-filter="frontend">Frontend Shells</button>
+            <button class="filter-btn" data-filter="backend">Backend Core</button>
         </div>
 
+        <!-- Project Display Grid Matrix -->
         <div class="project-grid">
-            <!-- Project 1 -->
-            <div class="project-card animate-card" data-category="frontend" onclick="openModal('ecommerce')">
-                <div class="card-header">
-                    <span class="status-badge learning">In Development</span>
-                </div>
+            <div class="project-card card-glass" data-category="frontend" onclick="openModal('ecommerce')">
+                <div class="card-tag">UI/UX Layout</div>
                 <h3>E-Commerce Interface Shell</h3>
-                <p>A pristine retail interface optimizing CSS layout properties and semantic accessibility markup patterns.</p>
-                <div class="tech-row">
-                    <span>HTML5</span><span>CSS Variables</span><span>JS UI</span>
-                </div>
-                <span class="action-trigger">Deep Dive Documentation →</span>
+                <p>Advanced dark-mode responsive glassmorphic client interface canvas built using clean web styles.</p>
+                <span class="card-link-action">Inspect Specifications →</span>
             </div>
 
-            <!-- Project 2 -->
-            <div class="project-card animate-card" data-category="fullstack" onclick="openModal('taskapi')">
-                <div class="card-header">
-                    <span class="status-badge planning">System Blueprint</span>
-                </div>
+            <div class="project-card card-glass" data-category="backend" onclick="openModal('taskapi')">
+                <div class="card-tag">API Engine</div>
                 <h3>Secure Task Manager API</h3>
-                <p>A decoupled backend core integrating modular server engines with payload schema validation systems.</p>
-                <div class="tech-row">
-                    <span>Node.js</span><span>Express</span><span>MongoDB</span>
-                </div>
-                <span class="action-trigger">Deep Dive Documentation →</span>
+                <p>Headless backend routing map utilizing token validation middleware layers and payload checking tools.</p>
+                <span class="card-link-action">Inspect Specifications →</span>
             </div>
 
-            <!-- Project 3 -->
-            <div class="project-card animate-card" data-category="fullstack" onclick="openModal('chat')">
-                <div class="card-header">
-                    <span class="status-badge planning">Architecture</span>
-                </div>
+            <div class="project-card card-glass" data-category="backend" onclick="openModal('chat')">
+                <div class="card-tag">Stream Network</div>
                 <h3>Real-Time Engine Sync</h3>
-                <p>A multi-client event server handling concurrent web traffic via low-latency connection pipelines.</p>
-                <div class="tech-row">
-                    <span>React.js</span><span>Socket.io</span><span>Express</span>
-                </div>
-                <span class="action-trigger">Deep Dive Documentation →</span>
+                <p>Asynchronous duplex connection web gateway designed to stream telemetry packets and event responses concurrently.</p>
+                <span class="card-link-action">Inspect Specifications →</span>
             </div>
         </div>
     </section>
 
-    <!-- Contact & Communications Section -->
+    <!-- Contact & Inbound Communications Section -->
     <section id="contact" class="contact-section">
         <div class="card-glass contact-wrapper">
             <h2>Let's Build Something Great</h2>
-            <p>I am seeking engineering mentorship pathways and collaborative projects. Drop a message to start a technical analysis execution session.</p>
+            <p>Seeking engineering mentorship tracks, system development collaborations, and code deployments. Drop a signal below to initialize a database record transaction log loop.</p>
             
+            <!-- Bulletproof Form Control Overrides: Blocks unexpected URL parameters completely -->
             <form id="portfolioForm" onsubmit="event.preventDefault();">
                 <div class="form-row">
-                    <input type="text" name="userName" placeholder="Name" required>
-                    <input type="email" name="userEmail" placeholder="Email Address" required>
+                    <input type="text" name="userName" placeholder="Name" required autocomplete="off">
+                    <input type="email" name="userEmail" placeholder="Email Address" required autocomplete="off">
                 </div>
                 <textarea name="userMessage" placeholder="Your message or collaboration proposal details..." rows="5" required></textarea>
                 <button type="submit" class="btn btn-primary form-submit">Send Signal</button>
@@ -144,17 +100,16 @@
         </div>
     </section>
 
-    <!-- Interactive Deep Dive Documentation Modal overlay Component -->
+    <!-- Dynamic Overlay Blueprint Modal Repository Component -->
     <div id="projectModal" class="modal-overlay" onclick="closeModal(event)">
-        <div class="modal-card">
-            <button class="close-modal" onclick="document.getElementById('projectModal').classList.remove('active')">&times;</button>
+        <div class="modal-card card-glass">
             <div id="modalContent">
-                <!-- Data dynamically injected via script.js -->
+                <!-- Statically injected via script.js engine variables -->
             </div>
         </div>
     </div>
 
-    <!-- Core Script Logic Engine Connection -->
+    <!-- Scripts Injection Pipeline -->
     <script src="script.js"></script>
 </body>
 </html>
