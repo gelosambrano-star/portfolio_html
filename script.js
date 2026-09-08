@@ -1,38 +1,3 @@
-// ==========================================================================
-// ☀️/🌙 LIGHT & DARK THEME SWITCH TOGGLE LOGIC MATRIX
-// ==========================================================================
-document.addEventListener('DOMContentLoaded', () => {
-    const themeToggleBtn = document.getElementById('themeToggle');
-    
-    // Check if the user previously selected a theme preference in a past session
-    const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
-    document.body.setAttribute('data-theme', savedTheme);
-    updateToggleIcon(savedTheme);
-
-    // Click Event Listener: Listens for thumbs/clicks on the navbar toggle icon button
-    if (themeToggleBtn) {
-        themeToggleBtn.addEventListener('click', () => {
-            const currentTheme = document.body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            // Apply the new theme state parameter to the <body> wrapper
-            document.body.setAttribute('data-theme', newTheme);
-            // Save the state into browser memory so it stays set when they reload!
-            localStorage.setItem('portfolio-theme', newTheme);
-            
-            updateToggleIcon(newTheme);
-        });
-    }
-
-    function updateToggleIcon(theme) {
-        if (!themeToggleBtn) return;
-        // Swap the visual anchor icon matches dynamically based on the state
-        themeToggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
-    }
-});
-
-
-
 /* ==========================================================================
    1. GLOBAL SYSTEM THEME ORCHESTRATION ENGINE
    ========================================================================== */
