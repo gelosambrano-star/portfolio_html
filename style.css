@@ -1,4 +1,18 @@
 /* ==========================================================================
+   🌙 LIGHT THEME VARIABLE COLOR PALETTES
+   ========================================================================== */
+body[data-theme="light"] {
+    --bg-main: #f3f4f6;            /* Switches background to a clean aesthetic light-gray */
+    --text-primary: #111827;       /* Turns main headings deep charcoal black for sharp contrast */
+    --text-secondary: #4b5563;     /* Turns descriptions readable medium slate gray */
+    --card-surface: rgba(255, 255, 255, 0.65); /* Keeps your glass cards semi-translucent light white */
+    --border-glass: rgba(0, 0, 0, 0.06);       /* Changes glass borders to a subtle dark trace line */
+}
+
+
+
+
+/* ==========================================================================
    ✨ GLOBAL CORE INFRASTRUCTURE Styles
    ========================================================================== */
 :root {
