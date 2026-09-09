@@ -114,11 +114,26 @@ function closeModal(event) {
 /* ==========================================================================
    4. FULL-STACK BACKEND RESOURCE TRANSMISSION CONNECTOR
    ========================================================================== */
+/* ==========================================================================
+   4. FULL-STACK BACKEND RESOURCE TRANSMISSION CONNECTOR (WITH ACTIVE SPINNER)
+   ========================================================================== */
 const contactForm = document.getElementById('portfolioForm');
 
 if (contactForm) {
     contactForm.addEventListener('submit', (event) => {
         event.preventDefault(); 
+
+        // 🔄 TELEMETRY DOM HIGHLIGHT LOCATORS
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnSpinner = document.getElementById('btnSpinner');
+
+        // Turn on the loading spinner visual interfaces instantly
+        if (submitBtn && btnText && btnSpinner) {
+            submitBtn.classList.add('btn-disabled');
+            btnText.textContent = "Routing Data Packet...";
+            btnSpinner.style.display = "inline-block";
+        }
 
         const formData = new FormData(contactForm);
         const payloadData = {
@@ -148,7 +163,15 @@ if (contactForm) {
         })
         .catch(err => {
             console.error("Network infrastructure interface failure details:", err);
-            alert("Unable to transmit signal to backend engine. Verify your node environment terminal is running!");
+            alert("Unable to transmit signal to backend engine. Verify your cloud network connection!");
+        })
+        .finally(() => {
+            // 🔄 ALWAYS RESET SYSTEM VISUAL STATES: Shuts down spinner regardless of success or network failure
+            if (submitBtn && btnText && btnSpinner) {
+                submitBtn.classList.remove('btn-disabled');
+                btnText.textContent = "Send Signal";
+                btnSpinner.style.display = "none";
+            }
         });
     });
 }
