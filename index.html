@@ -94,26 +94,28 @@
                     <input type="email" name="userEmail" placeholder="Email Address" required autocomplete="off">
                 </div>
                 <textarea name="userMessage" placeholder="Your message or collaboration proposal details..." rows="5" required></textarea>
-               <!-- Look at your form submit button code line near the bottom, and update it to match this exactly: -->
-<button type="submit" class="btn btn-primary form-submit" id="submitBtn">
-    <span id="btnText">Send Signal</span>
-    <!-- 🔄 THE NEON SPINNER MATRIX ELEMENT -->
-    <div id="btnSpinner" class="spinner-element" style="display: none;"></div>
-</button>
+          <!-- Upgraded button container with explicit identifiers and infinite spinner element -->
+    <button type="submit" class="btn btn-primary form-submit" id="submitBtn">
+        <span id="btnText">Send Signal</span>
+        <div id="btnSpinner" class="spinner-element" style="display: none;"></div>
+    </button>
+</form>
+</div>
+</section>
 
-            </form>
-        </div>
-    </section>
-
-    <!-- Dynamic Overlay Blueprint Modal Repository Component -->
-    <div id="projectModal" class="modal-overlay" onclick="closeModal(event)">
-        <div class="modal-card card-glass">
-            <div id="modalContent">
-                <!-- Statically injected via script.js engine variables -->
-            </div>
-        </div>
+<!-- Dynamic Overlay Blueprint Modal Repository Component -->
+<div id="projectModal" class="modal-overlay" onclick="closeModal(event)">
+<div class="modal-card card-glass">
+    <div id="modalContent">
+        <!-- Statically injected via script.js engine variables -->
     </div>
+</div>
+</div>
+
+<!-- Global Adaptive Footer Hub -->
 <footer class="footer-container">
+
+
     <p class="footer-credit">© 2026 Gelo Sambrano. Core Pipeline Secured.</p>
 <div class="footer-links">
     <a href="https://github.com" target="_blank">GitHub</a>
