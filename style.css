@@ -9,10 +9,6 @@ body {
     overflow-x: hidden;
 }
 
-
-
-
-
 /* ==========================================================================
    ✨ GLOBAL CORE INFRASTRUCTURE Styles
    ========================================================================== */
@@ -409,8 +405,6 @@ input:focus, textarea:focus {
 }
 
 
-
-
 /* ==========================================================================
    🌐 SYSTEM ACCELERATION FOOTER DESIGN
    ========================================================================== */
@@ -459,6 +453,33 @@ input:focus, textarea:focus {
 }
 
 
+/* ==========================================================================
+   🔄 NEON ROTATING LOADING SPINNER ENGINE
+   ========================================================================== */
+.spinner-element {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.15); /* Light gray underlying track guide */
+    border-radius: 50%;
+    border-top-color: var(--text-primary);        /* High-contrast solid white spinning head indicator */
+    animation: spinInfinite 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    margin-left: 0.75rem;
+    display: inline-block;
+}
+
+/* Mathematical 360-degree rotation path track loop grid */
+@keyframes spinInfinite {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Optional disabled button utility rule when submission state is active */
+.btn-disabled {
+    opacity: 0.6;
+    pointer-events: none;
+    cursor: not-allowed;
+}
 
 /* ==========================================================================
    📱 MOBILE & MOBILE RESPONSIVE CANVAS INTERFACES (MAX-WIDTH: 768px)
