@@ -94,7 +94,13 @@
                     <input type="email" name="userEmail" placeholder="Email Address" required autocomplete="off">
                 </div>
                 <textarea name="userMessage" placeholder="Your message or collaboration proposal details..." rows="5" required></textarea>
-                <button type="submit" class="btn btn-primary form-submit">Send Signal</button>
+               <!-- Look at your form submit button code line near the bottom, and update it to match this exactly: -->
+<button type="submit" class="btn btn-primary form-submit" id="submitBtn">
+    <span id="btnText">Send Signal</span>
+    <!-- 🔄 THE NEON SPINNER MATRIX ELEMENT -->
+    <div id="btnSpinner" class="spinner-element" style="display: none;"></div>
+</button>
+
             </form>
         </div>
     </section>
