@@ -1,32 +1,26 @@
 /* ==========================================================================
-   1. GLOBAL SYSTEM THEME ORCHESTRATION ENGINE
+   1. GLOBAL SYSTEM THEME ORCHESTRATION ENGINE (SAFE WRAPPED)
    ========================================================================== */
 const themeToggle = document.getElementById('themeToggle');
 const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
 
 // Initial state application configuration
 document.body.setAttribute('data-theme', savedTheme);
-themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
-// ✅ FIXED: Add this check rule so it never crashes on pages without the button!
-function updateToggleIcon(theme) {
-    const themeToggleBtn = document.getElementById('themeToggle');
-    
-    // Safety check gateway wrapper: if the button doesn't exist on this page, exit gracefully!
-    if (!themeToggleBtn) return; 
-    
-    themeToggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+
+// 🛡️ Safety Gateway Check: Execute theme updates ONLY if the button exists on the page
+if (themeToggle) {
+    themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+    // Click event listener tracking toggle execution signals
+    themeToggle.addEventListener('click', () => {
+        const activeTheme = document.body.getAttribute('data-theme');
+        const targetTheme = activeTheme === 'dark' ? 'light' : 'dark';
+        
+        document.body.setAttribute('data-theme', targetTheme);
+        localStorage.setItem('portfolio-theme', targetTheme);
+        themeToggle.textContent = targetTheme === 'dark' ? '☀️' : '🌙';
+    });
 }
-
-
-// Click event listener tracking toggle execution signals
-themeToggle.addEventListener('click', () => {
-    const activeTheme = document.body.getAttribute('data-theme');
-    const targetTheme = activeTheme === 'dark' ? 'light' : 'dark';
-    
-    document.body.setAttribute('data-theme', targetTheme);
-    localStorage.setItem('portfolio-theme', targetTheme);
-    themeToggle.textContent = targetTheme === 'dark' ? '☀️' : '🌙';
-});
 
 /* ==========================================================================
    2. ROADMAP ITERATION INTERACTIVE FILTER ENGINE
@@ -34,28 +28,29 @@ themeToggle.addEventListener('click', () => {
 const filterBtns = document.querySelectorAll('.filter-btn');
 const projectCards = document.querySelectorAll('.project-card');
 
-filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        // Toggle the UI state marker on the active item capsule
-        document.querySelector('.filter-btn.active').classList.remove('active');
-        btn.classList.add('active');
+if (filterBtns.length > 0 && projectCards.length > 0) {
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const currentActive = document.querySelector('.filter-btn.active');
+            if (currentActive) currentActive.classList.remove('active');
+            btn.classList.add('active');
 
-        const queryScope = btn.getAttribute('data-filter');
+            const queryScope = btn.getAttribute('data-filter');
 
-        projectCards.forEach(card => {
-            const scopeMatch = card.getAttribute('data-category');
-            
-            if (queryScope === 'all' || scopeMatch === queryScope) {
-                card.style.display = 'block';
-                // Subtle timeout layout hook to allow structural fade animations
-                setTimeout(() => card.style.opacity = '1', 10);
-            } else {
-                card.style.opacity = '0';
-                card.style.display = 'none';
-            }
+            projectCards.forEach(card => {
+                const scopeMatch = card.getAttribute('data-category');
+                
+                if (queryScope === 'all' || scopeMatch === queryScope) {
+                    card.style.display = 'block';
+                    setTimeout(() => card.style.opacity = '1', 10);
+                } else {
+                    card.style.opacity = '0';
+                    card.style.display = 'none';
+                }
+            });
         });
     });
-});
+}
 
 /* ==========================================================================
    3. DOCUMENTATION OBJECT OVERLAY REPOSITORY & CONTROLLER
@@ -90,12 +85,13 @@ const modalRepository = {
     }
 };
 
-// Open dynamic popup card element configurations
 function openModal(projectKey) {
     const data = modalRepository[projectKey];
-    if (!data) return;
-
     const targetContainer = document.getElementById('modalContent');
+    const projectModal = document.getElementById('projectModal');
+    
+    if (!data || !targetContainer || !projectModal) return;
+
     targetContainer.innerHTML = `
         <h2>${data.title}</h2>
         <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem;">${data.desc}</p>
@@ -105,13 +101,13 @@ function openModal(projectKey) {
         </ul>
     `;
     
-    document.getElementById('projectModal').classList.add('active');
+    projectModal.classList.add('active');
 }
 
-// Close active popup element layouts safely
 function closeModal(event) {
-    if (event.target.classList.contains('modal-overlay')) {
-        document.getElementById('projectModal').classList.remove('active');
+    const projectModal = document.getElementById('projectModal');
+    if (projectModal && event.target.classList.contains('modal-overlay')) {
+        projectModal.classList.remove('active');
     }
 }
 
@@ -125,7 +121,6 @@ if (contactForm) {
         event.preventDefault(); 
 
         const formData = new FormData(contactForm);
-        
         const payloadData = {
             name: formData.get('userName'),
             email: formData.get('userEmail'),
@@ -134,7 +129,6 @@ if (contactForm) {
 
         console.log("Transmitting payload structure to Express gateway:", payloadData);
 
-        // ✅ FIXED: Change this line to use a clean relative path endpoint route
         fetch('/api/contact', {
             method: 'POST',
             headers: { 
@@ -149,13 +143,12 @@ if (contactForm) {
             return response.json();
         })
         .then(result => {
-            // Success alert dialog box trigger loop
             alert(`Success Signal: ${result.message}`);
             contactForm.reset(); 
         })
         .catch(err => {
             console.error("Network infrastructure interface failure details:", err);
-            alert("Unable to transmit signal to backend engine. Verify your node environment terminal is running on port 3000!");
+            alert("Unable to transmit signal to backend engine. Verify your node environment terminal is running!");
         });
     });
 }
