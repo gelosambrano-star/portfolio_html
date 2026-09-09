@@ -100,27 +100,48 @@ app.get('/api/messages', async (req, res) => {
 });
 
 // 3. Delete Request: Endpoint processing specific document wipe transactions
-app.delete('/api/messages/:id', async (req, res) => {
-    const authHeader = req.headers['x-admin-password'];
-    const targetId = req.params.id;
+//app.delete('/api/messages/:id', async (req, res) => {
+  //  const authHeader = req.headers['x-admin-password'];
+    //const targetId = req.params.id;
 
-    if (authHeader !== ADMIN_PASSWORD) {
-        return res.status(401).json({ error: "Unauthorized transaction authorization code." });
-    }
+    //if (authHeader !== ADMIN_PASSWORD) {
+      //  return res.status(401).json({ error: "Unauthorized transaction authorization code." });
+    //}
 
-    try {
+    //try {
         // Execute target data tracking wipe commands into MongoDB Atlas collections
-        const deletionResult = await Contact.findByIdAndDelete(targetId);
+      //  const deletionResult = await Contact.findByIdAndDelete(targetId);
         
-        if (!deletionResult) {
-            return res.status(404).json({ error: "Target message trace not found in cluster data." });
-        }
+        //if (!deletionResult) {
+          //  return res.status(404).json({ error: "Target message trace not found in cluster data." });
+        //}
 
-        console.log(`\n🗑️ [MongoDB Transaction Log]: Document ID ${targetId} erased permanently.`);
-        res.status(200).json({ message: "Record successfully scrubbed from cloud memory banks." });
+        //console.log(`\n🗑️ [MongoDB Transaction Log]: Document ID ${targetId} erased permanently.`);
+        //res.status(200).json({ message: "Record successfully scrubbed from cloud memory banks." });
+    //} catch (error) {
+      //  console.error("Database deletion engine failure:", error);
+        //res.status(500).json({ error: "Internal cluster write exception encountered during deletion." });
+    //}
+//});
+// ==========================================================================
+// 🗑️ BACKEND DATABASE DELETE ROUTE PIPELINE
+// ==========================================================================
+app.delete('/api/messages/:id', async (req, res) => {
+    try {
+        const messageId = req.params.id;
+        
+        // Tells Mongoose to search the cloud cluster and destroy the matching document ID
+        const deletedDoc = await mongoose.model('Contact').findByIdAndDelete(messageId);
+        
+        if (!deletedDoc) {
+            return res.status(404).json({ success: false, message: "Record document not found inside cluster database." });
+        }
+        
+        console.log(`🗑️ Database Entry Wiped: ID [${messageId}]`);
+        return res.status(200).json({ success: true, message: "Signal entry successfully destroyed from cloud database." });
     } catch (error) {
-        console.error("Database deletion engine failure:", error);
-        res.status(500).json({ error: "Internal cluster write exception encountered during deletion." });
+        console.error("Critical database deletion loop breakdown:", error);
+        return res.status(500).json({ success: false, message: "Internal server registry error encountered during deletion." });
     }
 });
 
