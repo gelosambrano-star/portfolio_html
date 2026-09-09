@@ -408,9 +408,53 @@ input:focus, textarea:focus {
     position: relative;
 }
 
+
+
+
+/* ==========================================================================
+   🌐 SYSTEM ACCELERATION FOOTER DESIGN
+   ========================================================================== */
+.footer-container {
+    display: flex;
+    flex-direction: column;   /* 1. Stacks the credit text on top of the links */
+    justify-content: center;   /* 2. Centers everything horizontally */
+    align-items: center;       /* 3. Centers everything vertically */
+    gap: 1rem;                 /* 4. Puts space between the text block and link row */
+    padding: 4rem 8% 4rem 8%;
+    border-top: 1px solid var(--border-glass);
+    background: rgba(3, 7, 18, 0.9);
+}
+
+.footer-credit {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.footer-links {
+    display: flex;             /* 5. Activates Flexbox inside a Flexbox! */
+    justify-content: center;   /* 6. Centers the links row in the middle */
+    gap: 2rem;                 /* 7. Spaces out your GitHub, LinkedIn, and Resume tags */
+}
+
+.footer-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: var(--brand-accent); /* Soft blue text glow on hover */
+}
+
+
 /* ==========================================================================
    📱 MOBILE & MOBILE RESPONSIVE CANVAS INTERFACES (MAX-WIDTH: 768px)
    ========================================================================== */
+
+
 @media screen and (max-width: 768px) {
     
     body {
