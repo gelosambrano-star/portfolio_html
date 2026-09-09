@@ -7,6 +7,16 @@ const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
 // Initial state application configuration
 document.body.setAttribute('data-theme', savedTheme);
 themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+// ✅ FIXED: Add this check rule so it never crashes on pages without the button!
+function updateToggleIcon(theme) {
+    const themeToggleBtn = document.getElementById('themeToggle');
+    
+    // Safety check gateway wrapper: if the button doesn't exist on this page, exit gracefully!
+    if (!themeToggleBtn) return; 
+    
+    themeToggleBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+}
+
 
 // Click event listener tracking toggle execution signals
 themeToggle.addEventListener('click', () => {
