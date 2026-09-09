@@ -445,9 +445,19 @@ input:focus, textarea:focus {
     transition: color 0.2s ease;
 }
 
-.footer-links a:hover {
-    color: var(--brand-accent); /* Soft blue text glow on hover */
+/* Base Link Elements Style */
+.footer-links a {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    transition: all 0.3s ease; /*  PERFECT! */
 }
+
+/* Hover Interaction Trigger */
+.footer-links a:hover {
+    color: var(--brand-accent);
+    transform: scale(1.1);     /*  FIXED: 1.1 makes it grow 10% larger on hover! */
+}
+
 
 
 /* ==========================================================================
