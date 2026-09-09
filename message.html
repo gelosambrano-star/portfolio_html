@@ -3,209 +3,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | Messages</title>
+    <title>Admin Dashboard | Message Console</title>
+    <!-- Favicon Shortcut Patch: Keeps inspect console diagnostics clean -->
+    <link rel="icon" href="data:,">
+    <!-- Google Fonts Infrastructure Link -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
+        /* ==========================================================================
+           ✨ DASHBOARD DESIGN CORE ARCHITECTURE
+           ========================================================================== */
         :root {
-            --bg-main: #030712;
+            --bg-main: #0a0f1d;
             --text-primary: #f9fafb;
             --text-secondary: #9ca3af;
-            --card-surface: rgba(17, 24, 39, 0.7);
-            --border-glass: rgba(255, 255, 255, 0.08);
-            --accent-alert: #ef4444; 
+            --card-surface: rgba(17, 24, 39, 0.45);
+            --border-glass: rgba(255, 255, 255, 0.06);
+            --brand-accent: #3b82f6;
+            --danger-accent: #ef4444;
+            --danger-glow: rgba(239, 68, 68, 0.15);
+            --shadow-blur: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             background-color: var(--bg-main);
             color: var(--text-primary);
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            padding: 4rem 8%;
-            margin: 0;
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            line-height: 1.6;
+            padding: 3rem 8%;
+            display: none; /* Hidden by default until password validation passes */
         }
-        .header-container {
+
+        /* Glassmorphic Layout Base Card */
+        .card-glass {
+            background: var(--card-surface);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            box-shadow: var(--shadow-blur);
+        }
+
+        /* ==========================================================================
+           🧩 INTERFACE HEADER BAR COMPONENTS
+           ========================================================================== */
+        .console-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 3rem;
-            border-bottom: 1px solid var(--border-glass);
-            padding-bottom: 1.5rem;
-        }
-        h1 { font-size: 2.25rem; font-weight: 800; letter-spacing: -0.5px; }
-        .btn-group { display: flex; gap: 1rem; }
-        .back-btn {
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-weight: 600;
-            font-size: 0.95rem;
-            border: 1px solid var(--border-glass);
-            padding: 0.5rem 1.25rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        .back-btn:hover { color: var(--text-primary); background: var(--card-surface); }
-        
-        .messages-container {
-            display: grid;
-            grid-template-columns: 1fr;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
             gap: 1.5rem;
-            max-width: 900px;
+        }
+
+        .console-header h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.6rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border: 1px solid var(--border-glass);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--text-secondary);
+        }
+
+        .btn-danger {
+            background: var(--danger-glow);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.25);
+            border-color: var(--danger-accent);
+            transform: translateY(-1px);
+        }
+
+        /* ==========================================================================
+           📊 TRANSMISSION SIGNAL ROWS DISPLAY MATRIX
+           ========================================================================== */
+        .messages-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 1000px;
             margin: 0 auto;
         }
+
         .message-card {
-            background: var(--card-surface);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-glass);
             padding: 2rem;
-            border-radius: 12px;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            gap: 1.5rem;
+            align-items: center;
+            gap: 2rem;
+            transition: all 0.3s ease;
         }
-        .card-content-block { flex-grow: 1; }
-        .card-meta {
+
+        .message-content {
+            flex-grow: 1;
+        }
+
+        .message-meta {
             display: flex;
             justify-content: space-between;
             font-size: 0.85rem;
             color: var(--text-secondary);
-            margin-bottom: 1rem;
-            border-bottom: 1px dashed var(--border-glass);
+            margin-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             padding-bottom: 0.5rem;
         }
-        .user-name { font-weight: 700; color: #3b82f6; font-size: 1rem; }
-        .message-body { line-height: 1.6; color: #e5e7eb; white-space: pre-wrap; }
-        
-        /* Action UI Deletion Triggers */
-        .delete-btn {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--accent-alert);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.85rem;
-            transition: all 0.2s ease;
-            align-self: center;
+
+        .sender-name {
+            font-weight: 700;
+            color: var(--brand-accent);
         }
-        .delete-btn:hover {
-            background: var(--accent-alert);
-            color: white;
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+
+        .message-body {
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            margin-top: 0.5rem;
+            font-weight: 500;
         }
-        .empty-state { text-align: center; color: var(--text-secondary); font-size: 1.2rem; margin-top: 5rem; }
+
+        .status-empty {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* ==========================================================================
+           📱 RESPONSIVE COLLAPSE BREAKPOINTS (MAX-WIDTH: 768px)
+           ========================================================================== */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 2rem 5%;
+            }
+            .console-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-actions {
+                width: 100%;
+            }
+            .header-actions .btn {
+                flex-grow: 1;
+            }
+            .message-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.25rem;
+                padding: 1.5rem;
+            }
+            .btn-danger {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div class="header-container">
+    <!-- Interface Content Container Canvas -->
+    <header class="console-header">
         <h1>Inbound Signal Console</h1>
-        <div class="btn-group">
-            <button onclick="clearSessionToken()" class="back-btn" style="cursor:pointer;">Lock Console</button>
-            <a href="/" class="back-btn">← Back to Site</a>
+        <div class="header-actions">
+            <button class="btn btn-secondary" onclick="lockConsoleSession()">Lock Console</button>
+            <a href="/" class="btn btn-secondary">← Back to Site</a>
         </div>
-    </div>
+    </header>
 
-    <div id="messagesGrid" class="messages-container">
-        <p class="empty-state">Secure verification processing...</p>
-    </div>
+    <main>
+        <div id="messagesContainer" class="messages-stack">
+            <!-- Dynamically injected via the API fetch pipeline below -->
+        </div>
+    </main>
 
+    <!-- ==========================================================================
+         🧠 CORE DYNAMIC DATABASE LINK SCRIPTS
+         ========================================================================== -->
     <script>
-        // Check for persistent session password cache keys inside memory structures
-        let userToken = sessionStorage.getItem('adminToken');
+        // 🔒 SECURITY CHECKPOINT GATEWAY: Protects the admin container loop from external snoopers
+        function authenticateAdmin() {
+            const masterToken = "GelloSecretDev2026";
+            const sessionActive = sessionStorage.getItem("adminAuthToken");
 
-        if (!userToken) {
-            userToken = prompt("🔐 Authentication Entry Required. Input Security Password Key:");
-            if (userToken) {
-                sessionStorage.setItem('adminToken', userToken);
+            if (sessionActive === "true") {
+                document.body.style.display = "block";
+                fetchDatabaseMessages();
+                return;
+            }
+
+            const identityChallenge = prompt("Security Authentication Required:\nEnter administrative master development access key password:");
+            
+            if (identityChallenge === masterToken) {
+                sessionStorage.setItem("adminAuthToken", "true");
+                document.body.style.display = "block";
+                fetchDatabaseMessages();
+            } else {
+                alert("Access Denied: Invalid registry credentials submitted.");
+                window.location.href = "/"; // Re-routes intruders back to the index home screen
             }
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            loadDatabaseRecords();
-        });
+        // 🌐 DATABASE FETCH TRANSACTION: Pulls real-time document packages out of cloud tables
+        function fetchDatabaseMessages() {
+            const container = document.getElementById('messagesContainer');
+            container.innerHTML = '<p class="status-empty">Connecting to MongoDB cloud pipeline clusters...</p>';
 
-        // Query execution handler to retrieve cloud documents safely
-        function loadDatabaseRecords() {
-            const grid = document.getElementById('messagesGrid');
-
-            fetch('/api/messages', {
-                method: 'GET',
-                headers: { 'x-admin-password': userToken }
-            })
-            .then(response => {
-                if (response.status === 401) {
-                    sessionStorage.removeItem('adminToken');
-                    alert("Authentication execution rejected: Access Key Mismatch.");
-                    window.location.reload();
-                    throw new Error("Invalid key.");
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.length === 0) {
-                    grid.innerHTML = '<p class="empty-state">No messages logged in MongoDB yet.</p>';
-                    return;
-                }
-                grid.innerHTML = '';
-
-                data.forEach(item => {
-                    const dateStr = new Date(item.timestamp).toLocaleString();
-                    const cardHTML = `
-                        <div class="message-card" id="card-${item._index || item._id}">
-                            <div class="card-content-block">
-                                <div class="card-meta">
-                                    <div>From: <span class="user-name">${escapeHTML(item.name)}</span> (${escapeHTML(item.email)})</div>
-                                    <div>Received: ${dateStr}</div>
-                                </div>
-                                <div class="message-body">${escapeHTML(item.message)}</div>
-                            </div>
-                            <button class="delete-btn" onclick="triggerRecordWipe('${item._id}')">Erase Signal</button>
-                        </div>
-                    `;
-                    grid.innerHTML += cardHTML;
-                });
-            })
-            .catch(err => {
-                grid.innerHTML = '<p class="empty-state" style="color: var(--accent-alert);">System Gateway Isolation Active. Stored collection sets unreadable.</p>';
-            });
-        }
-
-        // Network transaction controller processing dynamic deletion sequences
-        function triggerRecordWipe(documentId) {
-            if (!confirm("⚠️ Destructive Override Confirmation. Wipe this document transaction trace from MongoDB permanent tables?")) return;
-
-            fetch(`/api/messages/${documentId}`, {
-                method: 'DELETE',
-                headers: { 'x-admin-password': userToken }
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.error) {
-                    alert(`System execution abort rejection: ${result.error}`);
-                } else {
-                    // Smoothly isolate and delete card view elements on interface layout canvas
-                    const visualCard = document.getElementById(`card-${documentId}`);
-                    if (visualCard) visualCard.remove();
+            fetch('/api/messages')
+                .then(res => {
+                    if (!res.ok) throw new Error(`Network returned execution error code: ${res.status}`);
+                    return res.json();
+                })
+                .then(messages => {
+                    container.innerHTML = '';
                     
-                    // Re-render baseline status indicators if all components clear out
-                    const remainingCards = document.querySelectorAll('.message-card');
-                    if (remainingCards.length === 0) {
-                        document.getElementById('messagesGrid').innerHTML = '<p class="empty-state">No messages logged in MongoDB yet.</p>';
+                    if (messages.length === 0) {
+                        container.innerHTML = '<div class="card-glass status-empty">💾 Database is completely clear. No active packet transmissions found.</div>';
+                        return;
                     }
-                }
-            })
-            .catch(err => alert("Unable to fulfill execution sequence pipeline data wipe actions."));
-        }
 
-        function clearSessionToken() {
-            sessionStorage.removeItem('adminToken');
-            window.location.reload();
-        }
+                    // Sort database items chronologically so newest appears right at the top
+                    messages.reverse().forEach(msg => {
+                        const card = document.createElement('div');
+                        card.className = 'card-glass message-card';
+                        
+                        // Formats the native MongoDB aggregation timestamp string into a readable layout
+                        const timestamp = msg.createdAt ? new Date(msg.createdAt).toLocaleString() : new Date().toLocaleString();
 
-        function escapeHTML(str) {
-            return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
-        }
-    </script>
-</body>
-</html>
+                        card.innerHTML = `
+                            <div class="message-content">
+                                <div class="message-meta">
+                                    <span>From: <span class="sender-name">${msg.name}</span> (${msg.email})</span>
+                                    <span>Received: ${timestamp}</span>
+                                </div>
+                                <div class="message-body">"${msg.message}"</div>
+                            </div>
