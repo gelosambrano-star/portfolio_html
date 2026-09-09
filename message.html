@@ -39,7 +39,6 @@
             font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
             line-height: 1.6;
             padding: 3rem 8%;
-            display: none; /* Hidden by default until password validation passes */
         }
 
         /* Glassmorphic Layout Base Card */
@@ -220,7 +219,6 @@
             const sessionActive = sessionStorage.getItem("adminAuthToken");
 
             if (sessionActive === "true") {
-                document.body.style.display = "block";
                 fetchDatabaseMessages();
                 return;
             }
@@ -229,10 +227,9 @@
             
             if (identityChallenge === masterToken) {
                 sessionStorage.setItem("adminAuthToken", "true");
-                document.body.style.display = "block";
                 fetchDatabaseMessages();
             } else {
-                alert("Access Denied: Invalid registry credentials submitted.");
+                alert("Access Denied: Invalid credentials.");
                 window.location.href = "/"; // Re-routes intruders back to the index home screen
             }
         }
@@ -244,7 +241,7 @@
 
             fetch('/api/messages')
                 .then(res => {
-                    if (!res.ok) throw new Error(`Network returned execution error code: ${res.status}`);
+                    if (!res.ok) throw new Error(`Network error: ${res.status}`);
                     return res.json();
                 })
                 .then(messages => {
@@ -271,3 +268,9 @@
                                 </div>
                                 <div class="message-body">"${msg.message}"</div>
                             </div>
+                            <button class="btn btn-danger" onclick="eraseSignalEntry('${msg._id}', this)">
+                                Erase Signal
+                            </button>
+                        `;
+                        container.appendChild(card);
+                    });
