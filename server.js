@@ -7,7 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const HOST = '0.0.0.0';
 
-// 1. GLOBAL MIDDLEWARE (Must be at the very top)
+// 1. GLOBAL MIDDLEWARE
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -19,7 +19,6 @@ mongoose.connect(MONGO_URI)
     .then(() => console.log("💾 MongoDB Connected Successfully!"))
     .catch(err => console.error("❌ MongoDB Connection Failure Error:", err));
 
-// Register the Schema before any routes use it
 const contactSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true },
@@ -29,7 +28,7 @@ const contactSchema = new mongoose.Schema({
 const Contact = mongoose.model('Contact', contactSchema);
 
 // ==========================================================================
-// 3. API DATABASE ROUTES (MUST BE ABOVE STATIC FILES)
+// 3. API DATABASE ROUTES
 // ==========================================================================
 
 // GET: Fetch all messages from the database cluster
@@ -76,22 +75,17 @@ app.delete('/api/messages/:id', async (req, res) => {
 });
 
 // ==========================================================================
-// 4. STATIC FILE SERVING & ROUTING SHORTCUTS (Must be at the bottom)
+// 4. STATIC FILE SERVING & ROUTING SHORTCUTS
 // ==========================================================================
 app.use(express.static(path.join(__dirname)));
 
 // Clean URL routing shortcut for the admin panel
-// ❌ CHANGE THIS OLD LINE:
-//app.get('*', (req, res) => { ... })
-
-// ✅ TO THIS COMPATIBLE WILDCARD ROUTE LINE:
-app.get('/*any', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+app.get('/messages', (req, res) => {
+    res.sendFile(path.join(__dirname, 'message.html'));
 });
 
-
-// Fallback wildcard route catches anything else and returns the index page
-app.get('*', (req, res) => {
+// ✅ FIXED FOR EXPRESS 5: Explicit named wildcard parameters variable path catch-all
+app.get('/*any', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
