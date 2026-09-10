@@ -6,14 +6,10 @@
     <title>Admin Dashboard | Message Console</title>
     <!-- Favicon Shortcut Patch: Keeps inspect console diagnostics clean -->
     <link rel="icon" href="data:,">
-    <!-- Google Fonts Infrastructure Link -->
-    <link rel="preconnect" href="https://googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         /* ==========================================================================
-           ✨ DASHBOARD DESIGN CORE ARCHITECTURE
+           ✨ DASHBOARD DESIGN CORE ARCHITECTURE (NO EXTERNAL DEPENDENCIES)
            ========================================================================== */
         :root {
             --bg-main: #0a0f1d;
@@ -36,7 +32,7 @@
         body {
             background-color: var(--bg-main);
             color: var(--text-primary);
-            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             line-height: 1.6;
             padding: 3rem 8%;
         }
@@ -212,7 +208,7 @@
     <header class="console-header">
         <h1>
             Inbound Signal Console
-            <!-- 📊 Option B: Dynamic Live Counter Badge Element Node -->
+            <!-- Dynamic Live Counter Badge Element Node -->
             <span id="counterBadge" class="card-glass counter-badge">Counting...</span>
         </h1>
         <div class="header-actions">
@@ -231,13 +227,11 @@
          🧠 CORE DYNAMIC DATABASE LINK SCRIPTS
          ========================================================================== -->
     <script>
-        // Global scope helper session reset configuration
         function lockConsoleSession() {
             sessionStorage.removeItem("adminAuthToken");
             window.location.reload();
         }
 
-        // 🔒 SECURITY CHECKPOINT GATEWAY: Protects the admin container loop from external snoopers
         function authenticateAdmin() {
             const masterToken = "GelloSecretDev2026";
             const sessionActive = sessionStorage.getItem("adminAuthToken");
@@ -247,18 +241,20 @@
                 return;
             }
 
-            const identityChallenge = prompt("Security Authentication Required:\nEnter administrative master development access key password:");
-            
-            if (identityChallenge === masterToken) {
-                sessionStorage.setItem("adminAuthToken", "true");
-                fetchDatabaseMessages();
-            } else {
-                alert("Access Denied: Invalid registry credentials submitted.");
-                window.location.href = "/"; // Re-routes intruders back to the index home screen
-            }
+            // Small delay to let the browser clear render threads before prompting
+            setTimeout(() => {
+                const identityChallenge = prompt("Security Authentication Required:\nEnter administrative master development access key password:");
+                
+                if (identityChallenge === masterToken) {
+                    sessionStorage.setItem("adminAuthToken", "true");
+                    fetchDatabaseMessages();
+                } else {
+                    alert("Access Denied.");
+                    window.location.href = "/";
+                }
+            }, 200);
         }
 
-        // 🌐 DATABASE FETCH TRANSACTION: Pulls real-time document packages out of cloud tables
         function fetchDatabaseMessages() {
             const container = document.getElementById('messagesContainer');
             if (!container) return;
@@ -267,13 +263,13 @@
 
             fetch('/api/messages')
                 .then(res => {
-                    if (!res.ok) throw new Error(`Network returned execution error code: ${res.status}`);
+                    if (!res.ok) throw new Error(`Network status error: ${res.status}`);
                     return res.json();
                 })
                 .then(messages => {
                     container.innerHTML = '';
                     
-                    // 📊 REAL-TIME COUNTER BADGE TELEMETRY UPDATER (Option B Core Logic)
+                    // Update Live Counter Badge
                     const counterBadge = document.getElementById('counterBadge');
                     if (counterBadge) {
                         counterBadge.textContent = `Active Signals: ${messages ? messages.length : 0}`;
@@ -284,3 +280,11 @@
                         return;
                     }
 
+                    messages.reverse().forEach(msg => {
+                        const card = document.createElement('div');
+                        card.className = 'card-glass message-card';
+                        const timestamp = msg.createdAt ? new Date(msg.createdAt).toLocaleString() : new Date().toLocaleString();
+
+                        card.innerHTML = `
+                            <div class="message-content">
+                                <div class="message-meta">
