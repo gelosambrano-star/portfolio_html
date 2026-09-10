@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | Message Console</title>
+    <!-- Favicon Shortcut Patch: Keeps inspect console diagnostics clean -->
     <link rel="icon" href="data:,">
+    <!-- Google Fonts Infrastructure Link -->
     <link rel="preconnect" href="https://googleapis.com">
-    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
+        /* ==========================================================================
+           ✨ DASHBOARD DESIGN CORE ARCHITECTURE
+           ========================================================================== */
         :root {
             --bg-main: #0a0f1d;
             --text-primary: #f9fafb;
@@ -22,7 +27,11 @@
             --shadow-blur: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             background-color: var(--bg-main);
@@ -32,6 +41,7 @@
             padding: 3rem 8%;
         }
 
+        /* Glassmorphic Layout Base Card */
         .card-glass {
             background: var(--card-surface);
             backdrop-filter: blur(12px);
@@ -41,6 +51,9 @@
             box-shadow: var(--shadow-blur);
         }
 
+        /* ==========================================================================
+           🧩 INTERFACE HEADER BAR COMPONENTS WITH INTEGRATED LIVE COUNTER
+           ========================================================================== */
         .console-header {
             display: flex;
             justify-content: space-between;
@@ -50,8 +63,30 @@
             gap: 1.5rem;
         }
 
-        .console-header h1 { font-size: 2.25rem; font-weight: 800; letter-spacing: -1px; }
-        .header-actions { display: flex; gap: 1rem; }
+        .console-header h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Live telemetry signal tracking badge */
+        .counter-badge {
+            font-size: 0.9rem;
+            padding: 0.3rem 0.8rem;
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--brand-accent);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
 
         .btn {
             display: inline-flex;
@@ -66,20 +101,53 @@
             transition: all 0.2s ease;
         }
 
-        .btn-secondary { background: rgba(255, 255, 255, 0.05); color: var(--text-primary); border: 1px solid var(--border-glass); }
-        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--text-secondary); }
-        .btn-danger { background: var(--danger-glow); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
-        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border: 1px solid var(--border-glass);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--text-secondary);
+        }
+
+        .btn-danger {
+            background: var(--danger-glow);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
         .btn-danger:hover {
             background: rgba(239, 68, 68, 0.25);
             border-color: var(--danger-accent);
             transform: translateY(-1px);
         }
 
-        .messages-stack { display: flex; flex-direction: column; gap: 1.5rem; max-width: 1000px; margin: 0 auto; }
-        .message-card { padding: 2rem; display: flex; justify-content: space-between; align-items: center; gap: 2rem; transition: all 0.3s ease; }
-        .message-content { flex-grow: 1; }
-        
+        /* ==========================================================================
+           📊 TRANSMISSION SIGNAL ROWS DISPLAY MATRIX
+           ========================================================================== */
+        .messages-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .message-card {
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .message-content {
+            flex-grow: 1;
+        }
+
         .message-meta {
             display: flex;
             justify-content: space-between;
@@ -90,49 +158,86 @@
             padding-bottom: 0.5rem;
         }
 
-        .sender-name { font-weight: 700; color: var(--brand-accent); }
-        .message-body { font-size: 1.05rem; color: var(--text-primary); margin-top: 0.5rem; font-weight: 500; }
-        .status-empty { text-align: center; padding: 4rem; color: var(--text-secondary); font-size: 1.1rem; }
+        .sender-name {
+            font-weight: 700;
+            color: var(--brand-accent);
+        }
 
+        .message-body {
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .status-empty {
+            text-align: center;
+            padding: 4rem;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* ==========================================================================
+           📱 RESPONSIVE COLLAPSE BREAKPOINTS (MAX-WIDTH: 768px)
+           ========================================================================== */
         @media screen and (max-width: 768px) {
-            body { padding: 2rem 5%; }
-            .console-header { flex-direction: column; align-items: flex-start; }
-            .header-actions { width: 100%; }
-            .header-actions .btn { flex-grow: 1; }
-            .message-card { flex-direction: column; align-items: flex-start; gap: 1.25rem; padding: 1.5rem; }
-            .btn-danger { width: 100%; }
+            body {
+                padding: 2rem 5%;
+            }
+            .console-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-actions {
+                width: 100%;
+            }
+            .header-actions .btn {
+                flex-grow: 1;
+            }
+            .message-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.25rem;
+                padding: 1.5rem;
+            }
+            .btn-danger {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
 
-<!-- ✅ UPGRADED COMPONENT: Added the dynamic counter tracking badge next to the title -->
-<header class="console-header">
-    <h1 style="display: flex; align-items: center; gap: 1rem;">
-        Inbound Signal Console 
-        <span id="counterBadge" class="card-glass" style="font-size: 0.9rem; padding: 0.3rem 0.8rem; background: rgba(59, 130, 246, 0.15); color: var(--brand-accent); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 20px; font-weight: 700;">
-            Counting...
-        </span>
-    </h1>
-    <div class="header-actions">
-        <button class="btn btn-secondary" onclick="lockConsoleSession()">Lock Console</button>
-        <a href="/" class="btn btn-secondary">← Back to Site</a>
-    </div>
-</header>
+    <!-- Interface Content Container Canvas -->
+    <header class="console-header">
+        <h1>
+            Inbound Signal Console
+            <!-- 📊 Option B: Dynamic Live Counter Badge Element Node -->
+            <span id="counterBadge" class="card-glass counter-badge">Counting...</span>
+        </h1>
+        <div class="header-actions">
+            <button class="btn btn-secondary" onclick="lockConsoleSession()">Lock Console</button>
+            <a href="/" class="btn btn-secondary">← Back to Site</a>
+        </div>
+    </header>
 
     <main>
         <div id="messagesContainer" class="messages-stack">
-            <!-- Data dynamically injected below -->
+            <!-- Dynamically injected via the API fetch pipeline below -->
         </div>
     </main>
 
+    <!-- ==========================================================================
+         🧠 CORE DYNAMIC DATABASE LINK SCRIPTS
+         ========================================================================== -->
     <script>
-        // Global scope helper functions declaration
+        // Global scope helper session reset configuration
         function lockConsoleSession() {
             sessionStorage.removeItem("adminAuthToken");
             window.location.reload();
         }
 
+        // 🔒 SECURITY CHECKPOINT GATEWAY: Protects the admin container loop from external snoopers
         function authenticateAdmin() {
             const masterToken = "GelloSecretDev2026";
             const sessionActive = sessionStorage.getItem("adminAuthToken");
@@ -142,100 +247,40 @@
                 return;
             }
 
-            setTimeout(() => {
-                const identityChallenge = prompt("Security Authentication Required:\nEnter administrative master development access key password:");
-                if (identityChallenge === masterToken) {
-                    sessionStorage.setItem("adminAuthToken", "true");
-                    fetchDatabaseMessages();
-                } else {
-                    alert("Access Denied.");
-                    window.location.href = "/";
-                }
-            }, 100);
+            const identityChallenge = prompt("Security Authentication Required:\nEnter administrative master development access key password:");
+            
+            if (identityChallenge === masterToken) {
+                sessionStorage.setItem("adminAuthToken", "true");
+                fetchDatabaseMessages();
+            } else {
+                alert("Access Denied: Invalid registry credentials submitted.");
+                window.location.href = "/"; // Re-routes intruders back to the index home screen
+            }
         }
 
+        // 🌐 DATABASE FETCH TRANSACTION: Pulls real-time document packages out of cloud tables
         function fetchDatabaseMessages() {
             const container = document.getElementById('messagesContainer');
             if (!container) return;
-            
+
             container.innerHTML = '<p class="status-empty">Connecting to MongoDB cloud pipeline clusters...</p>';
 
             fetch('/api/messages')
                 .then(res => {
-                    if (!res.ok) throw new Error(`Network status error: ${res.status}`);
+                    if (!res.ok) throw new Error(`Network returned execution error code: ${res.status}`);
                     return res.json();
                 })
                 .then(messages => {
                     container.innerHTML = '';
+                    
+                    // 📊 REAL-TIME COUNTER BADGE TELEMETRY UPDATER (Option B Core Logic)
+                    const counterBadge = document.getElementById('counterBadge');
+                    if (counterBadge) {
+                        counterBadge.textContent = `Active Signals: ${messages ? messages.length : 0}`;
+                    }
                     
                     if (!messages || messages.length === 0) {
                         container.innerHTML = '<div class="card-glass status-empty">💾 Database is completely clear. No active packet transmissions found.</div>';
                         return;
                     }
 
-                    messages.reverse().forEach(msg => {
-                        const card = document.createElement('div');
-                        card.className = 'card-glass message-card';
-                        const timestamp = msg.createdAt ? new Date(msg.createdAt).toLocaleString() : new Date().toLocaleString();
-
-                        card.innerHTML = `
-                            <div class="message-content">
-                                <div class="message-meta">
-                                    <span>From: <span class="sender-name">${msg.name || 'Anonymous'}</span> (${msg.email || 'N/A'})</span>
-                                    <span>Received: ${timestamp}</span>
-                                </div>
-                                <div class="message-body">"${msg.message || ''}"</div>
-                            </div>
-                            <button class="btn btn-danger" onclick="eraseSignalEntry('${msg._id}', this)">
-                                Erase Signal
-                            </button>
-                        `;
-                        container.appendChild(card);
-                    });
-                })
-                .catch(err => {
-                    console.error("Fetch failure:", err);
-                    container.innerHTML = '<div class="card-glass status-empty" style="color:#f87171;">❌ Core Pipeline Link Failure. Unable to synchronize dataset arrays.</div>';
-                });
-        }
-
-        function eraseSignalEntry(messageId, buttonElement) {
-            if (!confirm("Are you absolutely certain you want to permanently delete this message record out of the cloud database?")) {
-                return;
-            }
-
-            fetch(`/api/messages/${messageId}`, { method: 'DELETE' })
-            .then(res => {
-                if (!res.ok) throw new Error(`Server rejected request.`);
-                return res.json();
-            })
-            .then(result => {
-                if (result.success) {
-                    const targetedCard = buttonElement.closest('.message-card');
-                    if (targetedCard) {
-                        targetedCard.style.opacity = '0';
-                        targetedCard.style.transform = 'translateY(15px)';
-                        setTimeout(() => {
-                            targetedCard.remove();
-                            if (document.getElementById('messagesContainer').children.length === 0) {
-                                fetchDatabaseMessages();
-                            }
-                        }, 300);
-                    }
-                } else {
-                    alert(`Error: ${result.message}`);
-                }
-            })
-            .catch(err => {
-                console.error("Delete failure:", err);
-                alert("Unable to transmit destruction data fields to cloud gateway node.");
-            });
-        }
-
-        // Initialize runtime sequence safe triggers
-        document.addEventListener("DOMContentLoaded", () => {
-            authenticateAdmin();
-        });
-    </script>
-</body>
-</html>
