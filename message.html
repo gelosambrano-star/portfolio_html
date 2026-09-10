@@ -221,7 +221,9 @@
             const inputField = document.getElementById('passwordInput');
             const errorText = document.getElementById('loginError');
             
-            if (inputField.value === "GelloSecretDev2026") {
+       // 🔍 What your code is looking for:
+if (inputField.value === "GelloSecretDev2026") { ... }
+{
                 sessionStorage.setItem("adminAuthToken", "true");
                 unlockDashboardView();
             } else {
