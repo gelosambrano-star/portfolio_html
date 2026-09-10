@@ -106,13 +106,19 @@
 </head>
 <body>
 
-    <header class="console-header">
-        <h1>Inbound Signal Console</h1>
-        <div class="header-actions">
-            <button class="btn btn-secondary" onclick="lockConsoleSession()">Lock Console</button>
-            <a href="/" class="btn btn-secondary">← Back to Site</a>
-        </div>
-    </header>
+<!-- ✅ UPGRADED COMPONENT: Added the dynamic counter tracking badge next to the title -->
+<header class="console-header">
+    <h1 style="display: flex; align-items: center; gap: 1rem;">
+        Inbound Signal Console 
+        <span id="counterBadge" class="card-glass" style="font-size: 0.9rem; padding: 0.3rem 0.8rem; background: rgba(59, 130, 246, 0.15); color: var(--brand-accent); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 20px; font-weight: 700;">
+            Counting...
+        </span>
+    </h1>
+    <div class="header-actions">
+        <button class="btn btn-secondary" onclick="lockConsoleSession()">Lock Console</button>
+        <a href="/" class="btn btn-secondary">← Back to Site</a>
+    </div>
+</header>
 
     <main>
         <div id="messagesContainer" class="messages-stack">
