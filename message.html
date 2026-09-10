@@ -7,9 +7,6 @@
     <link rel="icon" href="data:,">
     
     <style>
-        /* ==========================================================================
-           ✨ DASHBOARD DESIGN CORE ARCHITECTURE
-           ========================================================================== */
         :root {
             --bg-main: #0a0f1d;
             --text-primary: #f9fafb;
@@ -44,9 +41,6 @@
             box-shadow: var(--shadow-blur);
         }
 
-        /* ==========================================================================
-           🔒 EMBEDDED SECURE LOGIN SCREEN INTERFACE
-           ========================================================================== */
         .login-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -82,9 +76,6 @@
         }
         .login-input:focus { border-color: var(--brand-accent); }
 
-        /* ==========================================================================
-           🧩 MAIN DASHBOARD CONTENT (HIDDEN BY DEFAULT)
-           ========================================================================== */
         #dashboardContent {
             display: none;
             width: 100%;
@@ -172,7 +163,6 @@
 </head>
 <body>
 
-    <!-- 🔒 VISUAL ACCESS LOCK PANEL OVERLAY -->
     <div id="loginOverlay" class="login-overlay">
         <div class="card-glass login-card">
             <h2>Console Lock</h2>
@@ -185,7 +175,6 @@
         </div>
     </div>
 
-    <!-- 📊 SECURE OPERATION VIEW CONTAINER CONTAINER -->
     <div id="dashboardContent">
         <header class="console-header">
             <h1>
@@ -200,16 +189,12 @@
 
         <main>
             <div id="messagesContainer" class="messages-stack">
-                <!-- Data dynamically streamed here -->
+                <!-- Data streamed dynamically -->
             </div>
         </main>
     </div>
 
-    <!-- ==========================================================================
-         🧠 CORE DYNAMIC DATABASE LINK SCRIPTS
-         ========================================================================== -->
     <script>
-        // Check session credentials automatically on immediate boot load
         window.addEventListener('DOMContentLoaded', () => {
             if (sessionStorage.getItem("adminAuthToken") === "true") {
                 unlockDashboardView();
@@ -221,9 +206,8 @@
             const inputField = document.getElementById('passwordInput');
             const errorText = document.getElementById('loginError');
             
-       // 🔍 What your code is looking for:
-if (inputField.value === "GelloSecretDev2026") { ... }
-{
+            // ✅ Password verification match loop
+            if (inputField.value === "GelloSecretDev2026") {
                 sessionStorage.setItem("adminAuthToken", "true");
                 unlockDashboardView();
             } else {
@@ -256,3 +240,22 @@ if (inputField.value === "GelloSecretDev2026") { ... }
                     return res.json();
                 })
                 .then(messages => {
+                    container.innerHTML = '';
+                    
+                    const counterBadge = document.getElementById('counterBadge');
+                    if (counterBadge) {
+                        counterBadge.textContent = `Active Signals: ${messages ? messages.length : 0}`;
+                    }
+                    
+                    if (!messages || messages.length === 0) {
+                        container.innerHTML = '<div class="card-glass status-empty">💾 Database is completely clear. No active packet transmissions found.</div>';
+                        return;
+                    }
+
+                    messages.reverse().forEach(msg => {
+                        const card = document.createElement('div');
+                        card.className = 'card-glass message-card';
+                        const timestamp = msg.createdAt ? new Date(msg.createdAt).toLocaleString() : new Date().toLocaleString();
+
+                        card.innerHTML = `
+                            <div class="message-content">
