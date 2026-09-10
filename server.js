@@ -84,7 +84,7 @@ app.get('/messages', (req, res) => {
     res.sendFile(path.join(__dirname, 'message.html'));
 });
 
-// ✅ FIXED FOR EXPRESS 5: Explicit named wildcard parameters variable path catch-all
+// ✅ Ensure it says this at the bottom of server.js on GitHub:
 app.get('/*any', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
