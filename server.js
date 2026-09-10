@@ -81,9 +81,14 @@ app.delete('/api/messages/:id', async (req, res) => {
 app.use(express.static(path.join(__dirname)));
 
 // Clean URL routing shortcut for the admin panel
-app.get('/messages', (req, res) => {
-    res.sendFile(path.join(__dirname, 'message.html'));
+// ❌ CHANGE THIS OLD LINE:
+//app.get('*', (req, res) => { ... })
+
+// ✅ TO THIS COMPATIBLE WILDCARD ROUTE LINE:
+app.get('/*any', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
+
 
 // Fallback wildcard route catches anything else and returns the index page
 app.get('*', (req, res) => {
