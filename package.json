@@ -1,26 +1,15 @@
 {
-  "name": "porfolio_html",
+  "name": "portfolio-html-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "script.js",
+  "description": "Secured Full-Stack Data Pipeline Portfolio Core",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
-    "cors": "^2.8.6",
-    "express": "^5.2.1",
-    "mongoose": "^9.9.5"
-  }
-    "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.0.0",
     "express-rate-limit": "^7.2.0",
     "mongoose": "^8.2.0"
   }
-
 }
