@@ -2,17 +2,41 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const { rateLimit } = require('express-rate-limit'); // 🛡️ Import security limiter layer
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const HOST = '0.0.0.0';
 
-// 1. GLOBAL MIDDLEWARE
+// ==========================================================================
+// 🛡️ 1. FIREWALL & COMPLIANCE MIDDLEWARE LAYER
+// ==========================================================================
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// 2. MONGOOSE DATABASE INITIALIZATION & SCHEMA DEFINITION
+// Global Security Router: Limits users to 100 general page clicks per 15 minutes
+const globalLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes window
+    limit: 100,
+    standardHeaders: 'draft-7',
+    legacyHeaders: false,
+    message: { success: false, message: "Too many requests to server gateway core. Slow down connection streams." }
+});
+app.use(globalLimiter);
+
+// 🛑 EXPLICIT SUBMISSION RATE LIMITER: Restricts form submission to 5 messages per 15 mins per IP
+const contactFormLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes window tracker
+    limit: 5,                  // Maximum 5 submissions allowed per client
+    standardHeaders: 'draft-7',
+    legacyHeaders: false,
+    message: { success: false, message: "⚠️ Security Override: Excessive packet traffic detected from your IP. Form blocked for 15 minutes to prevent spam flooding." }
+});
+
+// ==========================================================================
+// 💾 2. MONGOOSE CLUSTER INITIALIZATION
+// ==========================================================================
 const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://gelosambrano_db_user:Xkza6fLxrOlTLFWq@cluster0.auzbimk.mongodb.net/portfolio?appName=Cluster0";
 
 mongoose.connect(MONGO_URI)
@@ -28,7 +52,7 @@ const contactSchema = new mongoose.Schema({
 const Contact = mongoose.model('Contact', contactSchema);
 
 // ==========================================================================
-// 3. API DATABASE ROUTES
+// 📊 3. SECURED DATABASE API ENDPOINTS
 // ==========================================================================
 
 // GET: Fetch all messages from the database cluster
@@ -44,10 +68,23 @@ app.get('/api/messages', async (req, res) => {
     }
 });
 
-// POST: Submit a new contact message form record
-app.post('/api/contact', async (req, res) => {
+// POST: Submit a new contact message form record (WITH INJECTED SPAM RATELIMITER)
+app.post('/api/contact', contactFormLimiter, async (req, res) => {
     try {
-        const newContact = new Contact(req.body);
+        const { userName, userEmail, userMessage } = req.body;
+        
+        // 🔒 BACKEND INPUT SANITIZATION GATEWAY CHECK: Prevent basic HTML script injection hacks
+        if (typeof userMessage === 'string' && (userMessage.includes('<script>') || userMessage.includes('</script>'))) {
+            res.setHeader('Content-Type', 'application/json');
+            return res.status(400).json({ success: false, message: "Security Block: Malicious script tags detected inside payload fields." });
+        }
+
+        const newContact = new Contact({
+            name: userName,
+            email: userEmail,
+            message: userMessage
+        });
+        
         await newContact.save();
         res.setHeader('Content-Type', 'application/json');
         return res.status(201).json({ success: true, message: "Signal received and logged to database cluster!" });
@@ -75,21 +112,19 @@ app.delete('/api/messages/:id', async (req, res) => {
 });
 
 // ==========================================================================
-// 4. STATIC FILE SERVING & ROUTING SHORTCUTS
+// 📂 4. STATIC ASSET MAPS & URL SHORTCUTS
 // ==========================================================================
 app.use(express.static(path.join(__dirname)));
 
-// Clean URL routing shortcut for the admin panel
 app.get('/messages', (req, res) => {
     res.sendFile(path.join(__dirname, 'message.html'));
 });
 
-// ✅ Ensure it says this at the bottom of server.js on GitHub:
 app.get('/*any', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// 5. SERVER LAUNCH ENGINE START
+// 🚀 SERVER ENGINE START
 app.listen(PORT, HOST, () => {
     console.log(`🚀 Server executing live at http://${HOST}:${PORT}`);
 });
