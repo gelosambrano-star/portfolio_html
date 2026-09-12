@@ -4,13 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | Message Console</title>
-    <!-- Favicon Shortcut Patch: Keeps inspect console diagnostics clean -->
     <link rel="icon" href="data:,">
     
     <style>
-        /* ==========================================================================
-           ✨ DASHBOARD DESIGN CORE ARCHITECTURE (NO EXTERNAL DEPENDENCIES)
-           ========================================================================== */
         :root {
             --bg-main: #0a0f1d;
             --text-primary: #f9fafb;
@@ -45,9 +41,6 @@
             box-shadow: var(--shadow-blur);
         }
 
-        /* ==========================================================================
-           🔒 EMBEDDED SECURE LOGIN SCREEN INTERFACE
-           ========================================================================== */
         .login-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -83,7 +76,6 @@
         }
         .login-input:focus { border-color: var(--brand-accent); }
 
-        /* 👁️ Show password checkbox label tracking container markup styles */
         .toggle-container {
             display: flex;
             align-items: center;
@@ -93,13 +85,8 @@
             font-size: 0.9rem;
             color: var(--text-secondary);
             cursor: pointer;
-            user-select: none;
         }
-        .toggle-container input { cursor: pointer; }
 
-        /* ==========================================================================
-           🧩 MAIN DASHBOARD CONTENT (HIDDEN BY DEFAULT)
-           ========================================================================== */
         #dashboardContent {
             display: none;
             width: 100%;
@@ -192,18 +179,17 @@
         <div class="card-glass login-card">
             <h2>Console Lock</h2>
             <p>Security Access Credentials Required</p>
-            <form id="loginForm" onsubmit="handleLoginSubmit(event)">
-                <input type="password" id="passwordInput" class="login-input" placeholder="Enter Access Key Password" required autocomplete="off">
-                
-                <!-- 👁️ THE DYNAMIC SHOW PASSWORD TOGGLE ELEMENT PANEL -->
-                <label class="toggle-container">
-                    <input type="checkbox" id="showPasswordCheckbox" onclick="togglePasswordVisibility()">
-                    <span>Show Password</span>
-                </label>
+            
+            <!-- Native fields bypass form interception rules -->
+            <input type="password" id="passwordInput" class="login-input" placeholder="Enter Access Key Password" oninput="checkPasswordLive(this.value)">
+            
+            <label class="toggle-container">
+                <input type="checkbox" id="showPasswordCheckbox" onchange="document.getElementById('passwordInput').type = this.checked ? 'text' : 'password'">
+                <span>Show Password</span>
+            </label>
 
-                <div id="loginError" class="error-text">❌ Invalid Master Password Submitted</div>
-                <button type="submit" class="btn btn-primary">Unlock System</button>
-            </form>
+            <div id="loginError" class="error-text">❌ Invalid Master Password Submitted</div>
+            <button class="btn btn-primary" onclick="verifyAndUnlock()">Unlock System</button>
         </div>
     </div>
 
@@ -215,7 +201,7 @@
                 <span id="counterBadge" class="card-glass counter-badge">Counting...</span>
             </h1>
             <div class="header-actions">
-                <button class="btn btn-secondary" onclick="lockConsoleSession()">Lock Console</button>
+                <button class="btn btn-secondary" onclick="sessionStorage.removeItem('adminAuthToken'); window.location.reload();">Lock Console</button>
                 <a href="/" class="btn btn-secondary">← Back to Site</a>
             </div>
         </header>
@@ -227,26 +213,51 @@
         </main>
     </div>
 
-    <!-- ==========================================================================
-         🧠 CORE DYNAMIC DATABASE LINK SCRIPTS
-         ========================================================================== -->
     <script>
-        // Check session credentials automatically on immediate boot load
-        window.addEventListener('DOMContentLoaded', () => {
-            if (sessionStorage.getItem("adminAuthToken") === "true") {
-                unlockDashboardView();
-            }
-        });
+        // Check session token instantly on page load
+        if (sessionStorage.getItem("adminAuthToken") === "true") {
+            unlockDashboardView();
+        }
 
-        // 👁️ VISIBILITY DYNAMIC FIELD TRANSLATOR INTERPOLATOR ROUTINE
-        function togglePasswordVisibility() {
-            const passwordInput = document.getElementById('passwordInput');
-            const checkbox = document.getElementById('showPasswordCheckbox');
-            if (passwordInput && checkbox) {
-                // Flips the layout target property dynamically between masked and clear text modes
-                passwordInput.type = checkbox.checked ? "text" : "password";
+        // ⚡ LIVE PASSTHROUGH SHORTCUT: Auto-unlocks the moment you finish typing the exact key!
+        function checkPasswordLive(val) {
+            if (val === "GelloSecretDev2026") {
+                sessionStorage.setItem("adminAuthToken", "true");
+                unlockDashboardView();
             }
         }
 
-        function handleLoginSubmit(event) {
-            event.preventDefault();
+        // Manual backup button trigger click handler
+        function verifyAndUnlock() {
+            const val = document.getElementById('passwordInput').value;
+            if (val === "GelloSecretDev2026") {
+                sessionStorage.setItem("adminAuthToken", "true");
+                unlockDashboardView();
+            } else {
+                document.getElementById('loginError').style.display = "block";
+            }
+        }
+
+        function unlockDashboardView() {
+            document.getElementById('loginOverlay').style.display = "none";
+            document.getElementById('dashboardContent').style.display = "block";
+            fetchDatabaseMessages();
+        }
+
+        function fetchDatabaseMessages() {
+            const container = document.getElementById('messagesContainer');
+            if (!container) return;
+
+            container.innerHTML = '<p class="status-empty">Connecting to MongoDB cloud pipeline clusters...</p>';
+
+            fetch('/api/messages')
+                .then(res => res.json())
+                .then(messages => {
+                    container.innerHTML = '';
+                    
+                    const counterBadge = document.getElementById('counterBadge');
+                    if (counterBadge) {
+                        counterBadge.textContent = `Active Signals: ${messages ? messages.length : 0}`;
+                    }
+                    
+                    if (!messages || messages.length === 0) {
