@@ -43,7 +43,7 @@
         }
 
         /* ==========================================================================
-           🔒 100% NATIVE CSS LOCK OVERLAY SYSTEM (NO JAVASCRIPT NEEDED)
+           🔒 100% NATIVE CSS LOCK OVERLAY SYSTEM
            ========================================================================== */
         .login-overlay {
             position: fixed;
@@ -81,14 +81,10 @@
         }
         .login-input:focus { border-color: var(--brand-accent); }
 
-        /* 👑 THE NATIVE STYLING TRANSFORMATION WIZARD LINK: 
-           If the password input matches the pattern exactly, drop the entire lock box overlay out of existence! */
+        /* CSS unlock trigger rules */
         .login-input:placeholder-shown ~ .btn-primary { opacity: 0.5; pointer-events: none; }
         
-        /* When the input becomes strictly valid, vanish the overlay layout instantly! */
-        .login-input:valid {
-            display: none !important;
-        }
+        .login-input:valid { display: none !important; }
         
         body:has(.login-input:valid) .login-overlay {
             opacity: 0;
@@ -102,7 +98,7 @@
         }
 
         /* ==========================================================================
-           🧩 MAIN DASHBOARD CONTENT (HIDDEN UNTIL CSS UNLOCKS)
+           🧩 MAIN DASHBOARD CONTENT
            ========================================================================== */
         #dashboardContent {
             display: none;
@@ -194,9 +190,7 @@
             <h2>Console Lock</h2>
             <p>Security Access Credentials Required</p>
             
-            <!-- ⚡ THE HTML STYLING MAGIC PILL: Uses strict regex pattern matching. 
-                 The field becomes "valid" ONLY when the text matches your key exactly! -->
-            <input type="text" id="passwordInput" class="login-input" placeholder="Type Master Access Key" pattern="GelloSecretDev2026" required autocomplete="off">
+            <input type="text" id="passwordInput" class="login-input" placeholder="Type Master Access Key" pattern="GelloSecretDev2026" required interstate="off">
             
             <button class="btn btn-primary">Type Full Key to Access</button>
         </div>
@@ -207,7 +201,7 @@
         <header class="console-header">
             <h1>
                 Inbound Signal Console
-                <span id="counterBadge" class="card-glass counter-badge">Active Signals: ...</span>
+                <span id="counterBadge" class="card-glass counter-badge">Active Signals: Fetching...</span>
             </h1>
             <div class="header-actions">
                 <a href="/" class="btn btn-secondary">← Back to Site</a>
@@ -222,14 +216,9 @@
     </div>
 
     <!-- ==========================================================================
-         🧠 DATA STREAM UTILITIES (Bypasses Login Interception Completely)
+         🧠 DATA STREAM UTILITIES
          ========================================================================== -->
     <script>
-        // Start streaming data right on boot load so it's loaded before you even unlock!
-        window.addEventListener('DOMContentLoaded', () => {
-            fetchDatabaseMessages();
-        });
-
         function fetchDatabaseMessages() {
             const container = document.getElementById('messagesContainer');
             if (!container) return;
@@ -252,3 +241,13 @@
                     }
 
                     messages.reverse().forEach(msg => {
+                        const card = document.createElement('div');
+                        card.className = 'card-glass message-card';
+                        const timestamp = msg.createdAt ? new Date(msg.createdAt).toLocaleString() : new Date().toLocaleString();
+
+                        card.innerHTML = `
+                            <div class="message-content">
+                                <div class="message-meta">
+                                    <span>From: <span class="sender-name">${msg.name || 'Anonymous'}</span> (${msg.email || 'N/A'})</span>
+                                    <span>Received: ${timestamp}</span>
+                                </div>
