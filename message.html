@@ -7,6 +7,9 @@
     <link rel="icon" href="data:,">
     
     <style>
+        /* ==========================================================================
+           ✨ DASHBOARD DESIGN CORE ARCHITECTURE
+           ========================================================================== */
         :root {
             --bg-main: #0a0f1d;
             --text-primary: #f9fafb;
@@ -28,8 +31,6 @@
             line-height: 1.6;
             padding: 3rem 8%;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
 
         .card-glass {
@@ -41,6 +42,9 @@
             box-shadow: var(--shadow-blur);
         }
 
+        /* ==========================================================================
+           🔒 100% NATIVE CSS LOCK OVERLAY SYSTEM (NO JAVASCRIPT NEEDED)
+           ========================================================================== */
         .login-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -50,6 +54,7 @@
             justify-content: center;
             z-index: 9999;
             padding: 1rem;
+            transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
         .login-card {
@@ -71,22 +76,34 @@
             border-radius: 8px;
             font-size: 1rem;
             text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             outline: none;
         }
         .login-input:focus { border-color: var(--brand-accent); }
 
-        .toggle-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            cursor: pointer;
+        /* 👑 THE NATIVE STYLING TRANSFORMATION WIZARD LINK: 
+           If the password input matches the pattern exactly, drop the entire lock box overlay out of existence! */
+        .login-input:placeholder-shown ~ .btn-primary { opacity: 0.5; pointer-events: none; }
+        
+        /* When the input becomes strictly valid, vanish the overlay layout instantly! */
+        .login-input:valid {
+            display: none !important;
+        }
+        
+        body:has(.login-input:valid) .login-overlay {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: scale(1.05);
         }
 
+        body:has(.login-input:valid) #dashboardContent {
+            display: block !important;
+        }
+
+        /* ==========================================================================
+           🧩 MAIN DASHBOARD CONTENT (HIDDEN UNTIL CSS UNLOCKS)
+           ========================================================================== */
         #dashboardContent {
             display: none;
             width: 100%;
@@ -137,7 +154,6 @@
         }
 
         .btn-primary { background: var(--brand-accent); color: white; width: 100%; }
-        .btn-primary:hover { background: #2563eb; }
         .btn-secondary { background: rgba(255, 255, 255, 0.05); color: var(--text-primary); border: 1px solid var(--border-glass); }
         .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--text-secondary); }
         .btn-danger { background: var(--danger-glow); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
@@ -160,10 +176,8 @@
         .sender-name { font-weight: 700; color: var(--brand-accent); }
         .message-body { font-size: 1.05rem; color: var(--text-primary); margin-top: 0.5rem; font-weight: 500; }
         .status-empty { text-align: center; padding: 4rem; color: var(--text-secondary); font-size: 1.1rem; }
-        .error-text { color: var(--danger-accent); font-size: 0.9rem; margin-top: -0.5rem; margin-bottom: 1rem; display: none; }
 
         @media screen and (max-width: 768px) {
-            body { padding: 2rem 5%; }
             .console-header { flex-direction: column; align-items: flex-start; }
             .header-actions { width: 100%; }
             .header-actions .btn { flex-grow: 1; }
@@ -175,21 +189,16 @@
 <body>
 
     <!-- 🔒 VISUAL ACCESS LOCK PANEL OVERLAY -->
-    <div id="loginOverlay" class="login-overlay">
+    <div class="login-overlay">
         <div class="card-glass login-card">
             <h2>Console Lock</h2>
             <p>Security Access Credentials Required</p>
             
-            <!-- Native fields bypass form interception rules -->
-            <input type="password" id="passwordInput" class="login-input" placeholder="Enter Access Key Password" oninput="checkPasswordLive(this.value)">
+            <!-- ⚡ THE HTML STYLING MAGIC PILL: Uses strict regex pattern matching. 
+                 The field becomes "valid" ONLY when the text matches your key exactly! -->
+            <input type="text" id="passwordInput" class="login-input" placeholder="Type Master Access Key" pattern="GelloSecretDev2026" required autocomplete="off">
             
-            <label class="toggle-container">
-                <input type="checkbox" id="showPasswordCheckbox" onchange="document.getElementById('passwordInput').type = this.checked ? 'text' : 'password'">
-                <span>Show Password</span>
-            </label>
-
-            <div id="loginError" class="error-text">❌ Invalid Master Password Submitted</div>
-            <button class="btn btn-primary" onclick="verifyAndUnlock()">Unlock System</button>
+            <button class="btn btn-primary">Type Full Key to Access</button>
         </div>
     </div>
 
@@ -198,10 +207,9 @@
         <header class="console-header">
             <h1>
                 Inbound Signal Console
-                <span id="counterBadge" class="card-glass counter-badge">Counting...</span>
+                <span id="counterBadge" class="card-glass counter-badge">Active Signals: ...</span>
             </h1>
             <div class="header-actions">
-                <button class="btn btn-secondary" onclick="sessionStorage.removeItem('adminAuthToken'); window.location.reload();">Lock Console</button>
                 <a href="/" class="btn btn-secondary">← Back to Site</a>
             </div>
         </header>
@@ -213,36 +221,14 @@
         </main>
     </div>
 
+    <!-- ==========================================================================
+         🧠 DATA STREAM UTILITIES (Bypasses Login Interception Completely)
+         ========================================================================== -->
     <script>
-        // Check session token instantly on page load
-        if (sessionStorage.getItem("adminAuthToken") === "true") {
-            unlockDashboardView();
-        }
-
-        // ⚡ LIVE PASSTHROUGH SHORTCUT: Auto-unlocks the moment you finish typing the exact key!
-        function checkPasswordLive(val) {
-            if (val === "GelloSecretDev2026") {
-                sessionStorage.setItem("adminAuthToken", "true");
-                unlockDashboardView();
-            }
-        }
-
-        // Manual backup button trigger click handler
-        function verifyAndUnlock() {
-            const val = document.getElementById('passwordInput').value;
-            if (val === "GelloSecretDev2026") {
-                sessionStorage.setItem("adminAuthToken", "true");
-                unlockDashboardView();
-            } else {
-                document.getElementById('loginError').style.display = "block";
-            }
-        }
-
-        function unlockDashboardView() {
-            document.getElementById('loginOverlay').style.display = "none";
-            document.getElementById('dashboardContent').style.display = "block";
+        // Start streaming data right on boot load so it's loaded before you even unlock!
+        window.addEventListener('DOMContentLoaded', () => {
             fetchDatabaseMessages();
-        }
+        });
 
         function fetchDatabaseMessages() {
             const container = document.getElementById('messagesContainer');
@@ -261,3 +247,8 @@
                     }
                     
                     if (!messages || messages.length === 0) {
+                        container.innerHTML = '<div class="card-glass status-empty">💾 Database is completely clear. No active packet transmissions found.</div>';
+                        return;
+                    }
+
+                    messages.reverse().forEach(msg => {
