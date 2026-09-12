@@ -1,5 +1,5 @@
 /* ==========================================================================
-   🌐 FRONTEND CONTROL LOGIC ENGINE
+   🌐 FRONTEND CONTROL LOGIC ENGINE (INLINE STATUS TELEMETRY)
    ========================================================================== */
 const contactForm = document.getElementById('portfolioForm');
 
@@ -10,25 +10,23 @@ if (contactForm) {
         const submitBtn = document.getElementById('submitBtn');
         const btnText = document.getElementById('btnText');
         const btnSpinner = document.getElementById('btnSpinner');
+        const statusText = document.getElementById('formStatusText'); // Target new text row
 
-        // Turn on the loading spinner visual interfaces instantly
+        // Hide any previous status text before sending
+        if (statusText) { statusText.style.display = "none"; }
+
         if (submitBtn && btnText && btnSpinner) {
             submitBtn.style.opacity = "0.6";
             submitBtn.style.pointerEvents = "none";
-            btnText.textContent = "Routing Data Packet...";
+            btnText.textContent = "Routing...";
             btnSpinner.style.display = "inline-block";
         }
 
         const formData = new FormData(contactForm);
-        
-        // Bundles both property variants to ensure 100% compatibility across cached builds
         const payloadData = {
             name: formData.get('userName') || formData.get('name'),
             email: formData.get('userEmail') || formData.get('email'),
-            message: formData.get('userMessage') || formData.get('message'),
-            userName: formData.get('userName') || formData.get('name'),
-            userEmail: formData.get('userEmail') || formData.get('email'),
-            userMessage: formData.get('userMessage') || formData.get('message')
+            message: formData.get('userMessage') || formData.get('message')
         };
 
         fetch('/api/contact', {
@@ -38,60 +36,50 @@ if (contactForm) {
         })
         .then(response => response.json())
         .then(result => {
-            // Triggers your premium embedded glassmorphic popup modal card
-            showCustomSuccessPopup(result.message || "Signal received and logged to database cluster!");
-            if (result.success || result.message.includes("logged")) {
-                contactForm.reset(); 
+            if (statusText) {
+                statusText.style.display = "block";
+                
+                // Check if response matches a valid successful save sequence
+                if (result.success || result.message.includes("logged") || result.message.includes("received")) {
+                    statusText.style.color = "#10b981"; // Success Emerald Green
+                    statusText.textContent = "✓ Signal Logged Securely to MongoDB Cluster!";
+                    contactForm.reset(); // Wipe fields cleanly
+                } else {
+                    // Triggers if backend rate limiter blocks the request
+                    statusText.style.color = "#ef4444"; // Warning Crimson Red
+                    statusText.textContent = `❌ Blocked: ${result.message}`;
+                }
             }
         })
         .catch(err => {
-            console.error("Link sync channel failure:", err);
-            showCustomSuccessPopup("❌ Network transmission link error. Check your connection fields.");
+            console.error("Pipeline Sync Error:", err);
+            if (statusText) {
+                statusText.style.display = "block";
+                statusText.style.color = "#ef4444";
+                statusText.textContent = "❌ Network Infrastructure Error. Transmission failed.";
+            }
         })
         .finally(() => {
-            // Reset button back to standard active home styling parameters
             if (submitBtn && btnText && btnSpinner) {
                 submitBtn.style.opacity = "1";
                 submitBtn.style.pointerEvents = "auto";
                 btnText.textContent = "Send Signal";
                 btnSpinner.style.display = "none";
             }
+            
+            // Automatically fade the confirmation message out after 5 seconds
+            setTimeout(() => {
+                if (statusText) { statusText.style.display = "none"; }
+            }, 5000);
         });
     });
 }
 
-// ==========================================================================
-// 📡 CUSTOM SUCCESS CONFIRMATION MODAL TRANSITIONS
-// ==========================================================================
-function showCustomSuccessPopup(messageString) {
-    const overlay = document.getElementById('successPopup');
-    const msgContainer = document.getElementById('successPopupMessage');
-    
-    if (overlay && msgContainer) {
-        msgContainer.textContent = messageString;
-        overlay.style.display = 'flex';
-        setTimeout(() => {
-            overlay.classList.add('active');
-        }, 10);
-    }
-}
-
-function closeSuccessPopup() {
-    const overlay = document.getElementById('successPopup');
-    if (overlay) {
-        overlay.classList.remove('active');
-        setTimeout(() => {
-            overlay.style.display = 'none';
-        }, 300);
-    }
-}
-
-// Basic modal window handlers for blueprint inspector items
 function openModal(id) {
     const modal = document.getElementById('projectModal');
     const content = document.getElementById('modalContent');
     if (modal && content) {
-        content.innerHTML = `<h3>Module Inspector Log [${id.toUpperCase()}]</h3><p style='margin-top:1rem; color:var(--text-secondary);'>System verification logs clear. Route metrics operational on current cloud node mapping arrays.</p><button class='btn btn-secondary' onclick='closeModal(event)' style='margin-top:1.5rem; width:100%'>Close Inspector</button>`;
+        content.innerHTML = `<h3>Module Inspector Log [${id.toUpperCase()}]</h3><p style='margin-top:1rem; color:var(--text-secondary);'>System verification logs clear.</p><button class='btn btn-secondary' onclick='closeModal(event)' style='margin-top:1.5rem; width:100%'>Close Inspector</button>`;
         modal.style.display = 'flex';
     }
 }
