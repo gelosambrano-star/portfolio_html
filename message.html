@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | Message Console</title>
+    <!-- Favicon Shortcut Patch: Keeps inspect console diagnostics clean -->
     <link rel="icon" href="data:,">
     <style>
+        /* ==========================================================================
+           ✨ DESIGN CORE VARIABLES & ARCHITECTURE
+           ========================================================================== */
         :root {
             --bg-main: #0a0f1d;
             --text-primary: #f9fafb;
@@ -17,15 +21,18 @@
             --danger-glow: rgba(239, 68, 68, 0.15);
             --shadow-blur: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
+        
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body {
             background-color: var(--bg-main);
             color: var(--text-primary);
-            font-family: system-ui, sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             line-height: 1.6;
             padding: 3rem 8%;
             min-height: 100vh;
         }
+
         .card-glass {
             background: var(--card-surface);
             backdrop-filter: blur(12px);
@@ -34,6 +41,10 @@
             border-radius: 12px;
             box-shadow: var(--shadow-blur);
         }
+
+        /* ==========================================================================
+           🔒 AUTOMATED FIREWALL LOCK OVERLAY (NATIVE VISUAL SELECTORS)
+           ========================================================================== */
         .login-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -45,9 +56,11 @@
             padding: 1rem;
             transition: opacity 0.4s ease, transform 0.4s ease;
         }
+
         .login-card { max-width: 400px; width: 100%; padding: 3rem; text-align: center; }
         .login-card h2 { margin-bottom: 0.5rem; font-size: 1.75rem; font-weight: 800; }
         .login-card p { color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem; }
+        
         .login-input {
             width: 100%;
             background: rgba(0, 0, 0, 0.3);
@@ -61,13 +74,34 @@
             outline: none;
         }
         .login-input:focus { border-color: var(--brand-accent); }
+        
+        /* Native CSS Unlock Trigger States */
         .login-input:placeholder-shown ~ .btn-primary { opacity: 0.5; pointer-events: none; }
         .login-input:valid { display: none !important; }
-        body:has(.login-input:valid) .login-overlay { opacity: 0; visibility: hidden; pointer-events: none; transform: scale(1.05); }
-        body:has(.login-input:valid) #dashboardContent { display: block !important; }
+        
+        body:has(.login-input:valid) .login-overlay { 
+            opacity: 0; 
+            visibility: hidden; 
+            pointer-events: none; 
+            transform: scale(1.05); 
+        }
+        
+        body:has(.login-input:valid) #dashboardContent { 
+            display: block !important; 
+        }
+        
+        /* Automated CSS Error Notice Trigger Rule */
+        .login-input:not(:placeholder-shown):invalid ~ .login-error-msg {
+            display: block !important;
+        }
+        
+        /* ==========================================================================
+           🧩 MAIN OPERATIONAL DASHBOARD LAYOUT
+           ========================================================================== */
         #dashboardContent { display: none; width: 100%; }
         .console-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4rem; flex-wrap: wrap; gap: 1.5rem; }
         .console-header h1 { font-size: 2.25rem; font-weight: 800; display: flex; align-items: center; gap: 1rem; }
+        
         .counter-badge {
             font-size: 0.9rem;
             padding: 0.3rem 0.8rem;
@@ -77,6 +111,7 @@
             border-radius: 20px;
             font-weight: 700;
         }
+        
         .btn {
             display: inline-flex;
             align-items: center;
@@ -95,9 +130,11 @@
         .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--text-secondary); }
         .btn-danger { background: var(--danger-glow); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
         .btn-danger:hover { background: rgba(239, 68, 68, 0.25); border-color: var(--danger-accent); }
+        
         .messages-stack { display: flex; flex-direction: column; gap: 1.5rem; max-width: 1000px; margin: 0 auto; width: 100%; }
         .message-card { padding: 2rem; display: flex; justify-content: space-between; align-items: center; gap: 2rem; transition: all 0.3s ease; }
         .message-content { flex-grow: 1; }
+        
         .message-meta {
             display: flex;
             justify-content: space-between;
@@ -107,9 +144,11 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             padding-bottom: 0.5rem;
         }
+        
         .sender-name { font-weight: 700; color: var(--brand-accent); }
         .message-body { font-size: 1.05rem; color: var(--text-primary); margin-top: 0.5rem; font-weight: 500; }
         .status-empty { text-align: center; padding: 4rem; color: var(--text-secondary); font-size: 1.1rem; }
+        
         @media screen and (max-width: 768px) {
             .console-header { flex-direction: column; align-items: flex-start; }
             .message-card { flex-direction: column; align-items: flex-start; gap: 1.25rem; padding: 1.5rem; }
@@ -119,17 +158,20 @@
 </head>
 <body>
 
+    <!-- 🔒 VISUAL ACCESS LOCK PANEL OVERLAY -->
     <div class="login-overlay">
         <div class="card-glass login-card">
             <h2>Console Lock</h2>
             <p>Security Access Credentials Required</p>
+            
             <input type="text" id="passwordInput" class="login-input" placeholder="Type Master Access Key" pattern="GelloSecretDev2026" required autocomplete="off">
-            <!-- 🛑 NEW COMPONENT: Error notice that illuminates if text is entered incorrectly -->
-<div class="login-error-msg" style="color: var(--danger-accent); font-size: 0.9rem; font-weight: 600; margin-top: -0.75rem; margin-bottom: 1.5rem; display: none;">❌ Access Key Mismatch. Check parameters.</div>
+            <div class="login-error-msg" style="color: var(--danger-accent); font-size: 0.95rem; font-weight: 700; margin-bottom: 1.5rem; display: none;">❌ Access Key Mismatch. Check Parameters.</div>
+            
             <button class="btn btn-primary">Type Full Key to Access</button>
         </div>
     </div>
 
+    <!-- 📊 SECURE OPERATION VIEW CONTAINER -->
     <div id="dashboardContent">
         <header class="console-header">
             <h1>Inbound Signal Console <span id="counterBadge" class="card-glass counter-badge">Active Signals: Fetching...</span></h1>
@@ -137,15 +179,21 @@
         </header>
 
         <main>
-            <div id="messagesContainer" class="messages-stack"></div>
+            <div id="messagesContainer" class="messages-stack">
+                <!-- Stored records dynamically stream here -->
+            </div>
         </main>
     </div>
 
+    <!-- ==========================================================================
+         🧠 CORE AUTOMATED DATABASE CONNECTORS
+         ========================================================================== -->
     <script>
         function fetchDatabaseMessages() {
             const container = document.getElementById('messagesContainer');
             if (!container) return;
             container.innerHTML = '<p class="status-empty">Connecting to MongoDB cloud pipeline clusters...</p>';
+            
             fetch('/api/messages')
                 .then(res => res.json())
                 .then(messages => {
@@ -165,6 +213,9 @@
                                 <div class="message-meta">
                                     <span>From: <span class="sender-name">${msg.name || 'Anonymous'}</span> (${msg.email || 'N/A'})</span>
                                     <span>Received: ${timestamp}</span>
+                                // ==========================================================================
+// 🛠️ THE CONTINUATION CODE BLOCK (PASTE THIS RIGHT WHERE YOUR CODE CUTS OFF)
+// ==========================================================================
                                 </div>
                                 <div class="message-body">"${msg.message || ''}"</div>
                             </div>
@@ -178,6 +229,7 @@
                     container.innerHTML = '<div class="card-glass status-empty" style="color:#f87171;">❌ Core Pipeline Link Failure.</div>';
                 });
         }
+        
         function eraseSignalEntry(messageId, buttonElement) {
             if (!confirm("Are you absolutely certain you want to permanently delete this message record?")) return;
             fetch(`/api/messages/${messageId}`, { method: 'DELETE' })
@@ -187,11 +239,12 @@
                     const targetedCard = buttonElement.closest('.message-card');
                     if (targetedCard) {
                         targetedCard.remove();
-                        fetchDatabaseMessages();
+                        fetchDatabaseMessages(); // Automatically refreshes the live counter badge telemetry
                     }
                 }
             });
         }
+        
         if (document.readyState === "loading") {
             document.addEventListener("DOMContentLoaded", fetchDatabaseMessages);
         } else {
@@ -200,3 +253,5 @@
     </script>
 </body>
 </html>
+
+                                
