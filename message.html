@@ -124,6 +124,8 @@
             <h2>Console Lock</h2>
             <p>Security Access Credentials Required</p>
             <input type="text" id="passwordInput" class="login-input" placeholder="Type Master Access Key" pattern="GelloSecretDev2026" required autocomplete="off">
+            <!-- 🛑 NEW COMPONENT: Error notice that illuminates if text is entered incorrectly -->
+<div class="login-error-msg" style="color: var(--danger-accent); font-size: 0.9rem; font-weight: 600; margin-top: -0.75rem; margin-bottom: 1.5rem; display: none;">❌ Access Key Mismatch. Check parameters.</div>
             <button class="btn btn-primary">Type Full Key to Access</button>
         </div>
     </div>
