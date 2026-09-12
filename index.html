@@ -3,139 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gelo Sambrano | Full-Stack Software Engineer</title>
+    <title>Angelo Sambrano | Data Analyst & Full-Stack Developer Portfolio</title>
     <!-- Favicon Shortcut Patch: Keeps inspect console diagnostics clean -->
     <link rel="icon" href="data:,">
     <!-- Google Fonts Infrastructure Link -->
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- External Style Sheet Link Matrix -->
     <link rel="stylesheet" href="style.css">
 </head>
-<body data-theme="dark">
+<body>
 
-    <!-- Global Navigation Architecture -->
+    <!-- ==========================================================================
+         🗺️ NAVIGATION MATRIX COMPONENT
+         ========================================================================== -->
     <nav class="navbar-container">
         <div class="logo">
-            <span class="logo-bracket">&lt;</span>
-            <span class="logo-highlight">Gelo Sambrano</span>
+            <span class="logo-bracket">&lt;</span> 
+            <span class="logo-highlight">Angelo Sambrano</span> 
             <span class="logo-bracket">/&gt;</span>
         </div>
         <div class="nav-links">
-            <a href="#about">About</a>
+            <a href="#skills">Competencies</a>
             <a href="#roadmap">Roadmap</a>
+            <a href="#credentials">Certificates</a>
             <a href="#contact">Contact</a>
-          </div>
+            <a href="/messages" class="btn btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.85rem; margin-left: 0.5rem;">Console</a>
+        </div>
     </nav>
 
-    <!-- Main Hero Workspace Section -->
-    <header id="about" class="hero-section">
+    <!-- ==========================================================================
+         🚀 HERO HEADLINE LAYOUT WORKSPACE
+         ========================================================================== -->
+    <section class="hero-section">
         <div class="hero-content card-glass">
             <div class="status-badge">🟢 Core Stack Live on Port 10000</div>
-            <h1>Hi, I'm <span class="text-gradient">Angelo Sambrano</span></h1>
-            <h2>Full-Stack Developer & Systems Architect</h2>
-            <p>Building high-performance, asynchronous web interfaces powered by Node.js, Express gateways, and secure cloud-hosted MongoDB Atlas document structures.</p>
-           <!-- ✅ UPGRADED COMPONENT: Paste the new Resume button link directly into your hero actions block -->
-<div class="hero-actions">
-    <a href="#contact" class="btn btn-primary">Initialize Connection</a>
-    <a href="#roadmap" class="btn btn-secondary">Explore Blueprint</a>
-    <!-- 📄 THE ABSOLUTE RESUME DOWNLOAD LINK ROUTER -->
-    <a href="/Resume.pdf" download="Gelo_Sambrano_Resume.pdf" class="btn btn-secondary" style="margin-left: 1rem;">
-        Download Resume
-    </a>
-</div>
-
+            <h1>Data Analytics & <br><span class="text-gradient">Systems Engineering</span></h1>
+            <h2>Angelo Sambrano</h2>
+            <p>
+                Entry-level **Data Analyst** with a BS in Information Technology [INDEX]. Specialized in processing, cleaning, and transforming complex unstructured datasets into actionable business intelligence pipelines using SQL, Power Query, and Excel [INDEX].
+            </p>
+            <div class="hero-actions">
+                <a href="#contact" class="btn btn-primary">Initialize Connection</a>
+                <a href="#roadmap" class="btn btn-secondary">Explore Blueprint</a>
+                <!-- 📄 THE ABSOLUTE RESUME DOWNLOAD LINK ROUTER -->
+                <a href="/Resume.pdf" download="Gelo_Sambrano_Resume.pdf" class="btn btn-secondary" style="margin-left: 1rem;">
+                    Download Resume
+                </a>
+            </div>
         </div>
-    </header>
+    </section>
 
-    <!-- Roadmap Iteration Dashboard Section -->
+    <!-- ==========================================================================
+         📊 CORE TECHNOLOGICAL COMPETENCIES MATRIX
+         ========================================================================== -->
+    <section id="skills" class="skills-section">
+        <div class="section-header">
+            <h2>Technical Competencies</h2>
+            <p>Structured capabilities verified through formal data engineering certifications, academic tracks, and technical practice frameworks [INDEX].</p>
+        </div>
+
+        <div class="skills-wrapper-grid">
+            <!-- Framework Group 1: Data Analytics Core -->
+            <div class="skill-group-card card-glass">
+                <div class="skill-category-header">
+                    <span class="category-icon">📊</span>
+                    <h3>Data Analytics & Databases</h3>
+                </div>
+                <span class="cert-pill">Level III Certified</span>
+                <ul class="skills-list">
+                    <li><strong>SQL Engine Processing:</strong> Table architecture creation, primary keys validation, and CSV record imports using SQLite systems [INDEX].</li>
+                    <li><strong>Power Query Pipelines:</strong> Handling missing dataset parameters, duplicate removal optimization, and string text field standardization [INDEX].</li>
+                    <li><strong>Excel Engineering:</strong> Advanced logical formula calculations (COUNTIF, AVERAGE, MEDIAN, MODE) and dynamic pivot table generation [INDEX].</li>
+                </ul>
+            </div>
+
+            <!-- Framework Group 2: Visual Graphic Architecture -->
+            <div class="skill-group-card card-glass">
+                <div class="skill-category-header">
+                    <span class="category-icon">🎨</span>
+                    <h3>Design & UI Architecture</h3>
+                </div>
+                <span class="cert-pill">TESDA NC III Certified</span>
+                <ul class="skills-list">
+                    <li><strong>Adobe Photoshop Workspace:</strong> High-fidelity raster element manipulation, visual strategy development, and layer compositions [INDEX].</li>
+                    <li><strong>Adobe Illustrator Engine:</strong> Scalable vector brand identity blueprinting, typography tracking, and vector graphics creation [INDEX].</li>
+                    <li><strong>Interface Styling:</strong> Custom glassmorphic sheet design, semantic responsive layouts, and organic micro-interactions.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+         📊 ROADMAP GRID MODULES
+         ========================================================================== -->
     <section id="roadmap" class="roadmap-section">
         <div class="section-header">
-            <h2>Engineering Blueprint Roadmap</h2>
-            <p>Tracking full-stack architectural loops, system learning objectives, and dynamic project persistence components.</p>
+            <h2>System Learning Blueprint</h2>
+            <p>Chronological breakdown of technical milestones accomplished during this development cycle.</p>
         </div>
 
-        <!-- Dynamic Filter Console -->
         <div class="filter-wrapper">
             <button class="filter-btn active" data-filter="all">All Modules</button>
             <button class="filter-btn" data-filter="frontend">Frontend Shells</button>
             <button class="filter-btn" data-filter="backend">Backend Core</button>
+            <button class="filter-btn" data-filter="analytics">Data Analytics</button>
         </div>
 
-        <!-- Project Display Grid Matrix -->
         <div class="project-grid">
+            <!-- Card 1: Frontend E-commerce -->
             <div class="project-card card-glass" data-category="frontend" onclick="openModal('ecommerce')">
-                <div class="card-tag">UI/UX Layout</div>
+                <div class="card-tag">UX Architecture</div>
                 <h3>E-Commerce Interface Shell</h3>
-                <p>Advanced dark-mode responsive glassmorphic client interface canvas built using clean web styles.</p>
+                <p>High-performance mock catalog rendering fluid layouts, variables control panel configurations, and flex tracking frames.</p>
                 <span class="card-link-action">Inspect Specifications →</span>
             </div>
 
+            <!-- Card 2: Backend API -->
             <div class="project-card card-glass" data-category="backend" onclick="openModal('taskapi')">
-                <div class="card-tag">API Engine</div>
+                <div class="card-tag">API Core</div>
                 <h3>Secure Task Manager API</h3>
-                <p>Headless backend routing map utilizing token validation middleware layers and payload checking tools.</p>
+                <p>Headless environment deploying Express route trees, token verification check gateways, and automated parameter filters.</p>
                 <span class="card-link-action">Inspect Specifications →</span>
             </div>
 
-            <div class="project-card card-glass" data-category="backend" onclick="openModal('chat')">
-                <div class="card-tag">Stream Network</div>
-                <h3>Real-Time Engine Sync</h3>
-                <p>Asynchronous duplex connection web gateway designed to stream telemetry packets and event responses concurrently.</p>
+            <!-- Card 3: Analytics Dashboard -->
+            <div class="project-card card-glass" data-category="analytics" onclick="openModal('chat')">
+                <div class="card-tag">Analytics</div>
+                <h3>Predictive Analytics Engine</h3>
+                <p>Statistical processing engine evaluating sample demographics to resolve variable distributions and aggregation arrays.</p>
                 <span class="card-link-action">Inspect Specifications →</span>
             </div>
         </div>
     </section>
 
-    <!-- Contact & Inbound Communications Section -->
-    <section id="contact" class="contact-section">
-       <!-- ✅ UPGRADED CONTACT INTERFACE CAPSULED LAYOUT -->
-<div class="contact-wrapper card-glass">
-    <div class="status-badge">🟢 Core Network Pipeline Secure</div>
-    <h2>Let's Build Something Great</h2>
-    <p>
-        I am an entry-level **Data Analyst** specialized in **SQL (SQLite)**, **Power Query**, and **Excel** analytics frameworks. 
-        Based in **Laoag City, Philippines**, I process, clean, and transform complex unstructured datasets to support data-driven business decisions. 
-        Drop a line below to transmit your system requirements straight to my console database pipeline!
-    </p>
+    <!-- ==========================================================================
+         🎓 CREDENTIALS & CERTIFICATIONS PLATFORM VIEW
+         ========================================================================== -->
+    <section id="credentials" class="credentials-section">
+        <div class="section-header">
+            <h2>Professional Certifications & Education</h2>
+            <p>Validated credentials spanning advanced systems design, analytical processing, and university technical foundations.</p>
+        </div>
 
-    <form id="portfolioForm">
-        <!-- Keep your existing name, email, and message inputs exactly as they are here -->
-         <div class="form-row">
-                    <input type="text" name="userName" placeholder="Name" required autocomplete="off">
-                    <input type="email" name="userEmail" placeholder="Email Address" required autocomplete="off">
+        <div class="credentials-grid">
+            <!-- Cert 1: Academic Degree -->
+            <div class="credential-card card-glass">
+                <div class="cred-icon">🎓</div>
+                <div class="cred-info">
+                    <span class="cred-badge">Degree</span>
+                    <h3>BS Information Technology</h3>
+                    <p class="cred-issuer">Divine Word College of Laoag (2008 – 2012)</p>
+                    <p class="cred-desc">Core training in computing mechanics, algorithm architecture configurations, and database design metrics [INDEX].</p>
                 </div>
-                <textarea name="userMessage" placeholder="Your message or collaboration proposal details..." rows="5" required></textarea>
-          <!-- Upgraded button container with explicit identifiers and infinite spinner element -->
-    <button type="submit" class="btn btn-primary form-submit" id="submitBtn">
-        <span id="btnText">Send Signal</span>
-        <div id="btnSpinner" class="spinner-element" style="display: none;"></div>
-    </button>
-</form>
-</div>
-</section>
+            </div>
 
-<!-- Dynamic Overlay Blueprint Modal Repository Component -->
-<div id="projectModal" class="modal-overlay" onclick="closeModal(event)">
-<div class="modal-card card-glass">
-    <div id="modalContent">
-        <!-- Statically injected via script.js engine variables -->
-    </div>
-</div>
-</div>
+            <!-- Cert 2: Data Analytics -->
+            <div class="credential-card card-glass">
+                <div class="cred-icon">📊</div>
+                <div class="cred-info">
+                    <span class="cred-badge">Data Science</span>
+                    <h3>Data Analytics Level III</h3>
+                    <p class="cred-issuer">Issued by GESTAAC INC</p>
+                    <p class="cred-desc">Practical mastery covering data cleaning, statistical filtering formulas, and automated transformation pipelines [INDEX].</p>
+                </div>
+            </div>
 
-<!-- Global Adaptive Footer Hub -->
-<footer class="footer-container">
-
-
-    <p class="footer-credit">© 2026 Gelo Sambrano. Core Pipeline Secured.</p>
-<div class="footer-links">
-    <a href="https://github.com" target="_blank">GitHub</a>
-    <a href="https://www.linkedin.com/in/gelo-sambrano-9784a42a8/" target="_blank">linkedIn</a>
-    <a href="/Resume.pdf" download="Gelo_Sambrano_Resume.pdf">Resume</a>
-</div>
-</footer>
-    <!-- Scripts Injection Pipeline -->
-    <script src="script.js"></script>
-</body>
-</html>
+            <!-- Cert 3: Graphic Design -->
+            <div class="credential-card card-glass">
+                <div class="cred-icon">🎨</div>
+                <div class="cred-info">
+                    <span class="cred-badge">Design</span>
+                    <h3>Visual Graphic Design NC III</h3>
