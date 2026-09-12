@@ -137,10 +137,14 @@
                     <input type="email" name="userEmail" placeholder="Your Telemetry Email Address" required autocomplete="email">
                 </div>
                 <textarea name="userMessage" rows="5" placeholder="Transmit packet message logs or system specs here..." required></textarea>
+                               <!-- Upgraded button container with explicit identifiers and infinite spinner element -->
                 <button type="submit" class="btn btn-primary form-submit" id="submitBtn">
                     <span id="btnText">Send Signal</span>
                     <div id="btnSpinner" class="spinner-element" style="display: none;"></div>
                 </button>
+                
+                <!-- 📡 NEW TELEMETRY STATUS ROW (Provides clear inline visual confirmation) -->
+                <p id="formStatusText" style="margin-top: 1.25rem; font-size: 0.95rem; font-weight: 600; text-align: center; transition: all 0.3s ease; display: none;"></p>
             </form>
         </div>
     </section>
