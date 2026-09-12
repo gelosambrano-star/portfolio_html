@@ -68,30 +68,37 @@ app.get('/api/messages', async (req, res) => {
     }
 });
 
-// POST: Submit a new contact message form record (WITH INJECTED SPAM RATELIMITER)
+// ==========================================================================
+// 📊 FORTIFIED POST ENDPOINT (ACCEPTS ALL FIELD MATRIX VARIATIONS)
+// ==========================================================================
 app.post('/api/contact', contactFormLimiter, async (req, res) => {
     try {
-        const { userName, userEmail, userMessage } = req.body;
+        // Accepts both the classic format and the updated camelCase tracking format
+        const name = req.body.userName || req.body.name;
+        const email = req.body.userEmail || req.body.email;
+        const message = req.body.userMessage || req.body.message;
         
-        // 🔒 BACKEND INPUT SANITIZATION GATEWAY CHECK: Prevent basic HTML script injection hacks
-        if (typeof userMessage === 'string' && (userMessage.includes('<script>') || userMessage.includes('</script>'))) {
+        // 🔒 Input Sanitization Check
+        if (typeof message === 'string' && (message.includes('<script>') || message.includes('</script>'))) {
             res.setHeader('Content-Type', 'application/json');
-            return res.status(400).json({ success: false, message: "Security Block: Malicious script tags detected inside payload fields." });
+            return res.status(400).json({ success: false, message: "Security Block: Malicious script tags detected." });
         }
 
-        const newContact = new Contact({
-            name: userName,
-            email: userEmail,
-            message: userMessage
-        });
-        
+        // Verify that no required fields are blank before saving to MongoDB Atlas
+        if (!name || !email || !message) {
+            res.setHeader('Content-Type', 'application/json');
+            return res.status(400).json({ success: false, message: "Validation Failure: Required data fields cannot be blank." });
+        }
+
+        const newContact = new Contact({ name, email, message });
         await newContact.save();
+        
         res.setHeader('Content-Type', 'application/json');
         return res.status(201).json({ success: true, message: "Signal received and logged to database cluster!" });
     } catch (error) {
         console.error("Submission failure:", error);
         res.setHeader('Content-Type', 'application/json');
-        return res.status(500).json({ success: false, message: "Failed to log signal" });
+        return res.status(500).json({ success: false, message: "Failed to log signal to cloud matrix." });
     }
 });
 
