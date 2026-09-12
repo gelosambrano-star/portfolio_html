@@ -12,9 +12,7 @@
 </head>
 <body>
 
-    <!-- ==========================================================================
-         🗺️ NAVIGATION MATRIX COMPONENT
-         ========================================================================== -->
+    <!-- 🗺️ NAVBAR -->
     <nav class="navbar-container">
         <div class="logo">
             <span class="logo-bracket">&lt;</span> 
@@ -29,151 +27,149 @@
         </div>
     </nav>
 
-    <!-- ==========================================================================
-         🚀 HERO HEADLINE LAYOUT WORKSPACE
-         ========================================================================== -->
+    <!-- 🚀 HERO SECTION -->
     <section class="hero-section">
         <div class="hero-content card-glass">
             <div class="status-badge">🟢 Core Stack Live on Port 10000</div>
             <h1>Data Analytics & <br><span class="text-gradient">Systems Engineering</span></h1>
             <h2>Angelo Sambrano</h2>
-            <p>
-                Entry-level **Data Analyst** with a BS in Information Technology [INDEX]. Specialized in processing, cleaning, and transforming complex unstructured datasets into actionable business intelligence pipelines using SQL, Power Query, and Excel [INDEX].
-            </p>
+            <p>Entry-level **Data Analyst** with a BS in Information Technology [INDEX]. Specialized in processing, cleaning, and transforming datasets into business intelligence using SQL, Power Query, and Excel [INDEX].</p>
             <div class="hero-actions">
                 <a href="#contact" class="btn btn-primary">Initialize Connection</a>
                 <a href="#roadmap" class="btn btn-secondary">Explore Blueprint</a>
-                <a href="/Resume.pdf" download="Gelo_Sambrano_Resume.pdf" class="btn btn-secondary" style="margin-left: 1rem;">
-                    Download Resume
-                </a>
+                <a href="/Resume.pdf" download="Gelo_Sambrano_Resume.pdf" class="btn btn-secondary" style="margin-left: 1rem;">Download Resume</a>
             </div>
         </div>
     </section>
 
-    <!-- ==========================================================================
-         📊 CORE TECHNOLOGICAL COMPETENCIES MATRIX
-         ========================================================================== -->
+    <!-- 📊 COMPETENCIES MATRIX -->
     <section id="skills" class="skills-section">
         <div class="section-header">
             <h2>Technical Competencies</h2>
-            <p>Structured capabilities verified through formal data engineering certifications, academic tracks, and technical practice frameworks [INDEX].</p>
         </div>
-
         <div class="skills-wrapper-grid">
             <div class="skill-group-card card-glass">
-                <div class="skill-category-header">
-                    <span class="category-icon">📊</span>
-                    <h3>Data Analytics & Databases</h3>
-                </div>
+                <div class="skill-category-header"><h3>📊 Data Analytics & Databases</h3></div>
                 <span class="cert-pill">Level III Certified</span>
                 <ul class="skills-list">
-                    <li><strong>SQL Engine Processing:</strong> Table architecture creation, primary keys validation, and CSV record imports using SQLite systems [INDEX].</li>
-                    <li><strong>Power Query Pipelines:</strong> Handling missing dataset parameters, duplicate removal optimization, and string text field standardization [INDEX].</li>
-                    <li><strong>Excel Engineering:</strong> Advanced logical formula calculations (COUNTIF, AVERAGE, MEDIAN, MODE) and dynamic pivot table generation [INDEX].</li>
+                    <li><strong>SQL Engine Processing:</strong> Table architecture, primary keys, and CSV imports using SQLite [INDEX].</li>
+                    <li><strong>Power Query Pipelines:</strong> Handling missing values, duplicate removal, and field standardization [INDEX].</li>
+                    <li><strong>Excel Engineering:</strong> Advanced formulas (COUNTIF, AVERAGE, MEDIAN) and pivot tables [INDEX].</li>
                 </ul>
             </div>
-
             <div class="skill-group-card card-glass">
-                <div class="skill-category-header">
-                    <span class="category-icon">🎨</span>
-                    <h3>Design & UI Architecture</h3>
-                </div>
+                <div class="skill-category-header"><h3>🎨 Design & UI Architecture</h3></div>
                 <span class="cert-pill">TESDA NC III Certified</span>
                 <ul class="skills-list">
-                    <li><strong>Adobe Photoshop Workspace:</strong> High-fidelity raster element manipulation, visual strategy development, and layer compositions [INDEX].</li>
-                    <li><strong>Adobe Illustrator Engine:</strong> Scalable vector brand identity blueprinting, typography tracking, and vector graphics creation [INDEX].</li>
-                    <li><strong>Interface Styling:</strong> Custom glassmorphic sheet design, semantic responsive layouts, and organic micro-interactions.</li>
+                    <li><strong>Adobe Photoshop:</strong> High-fidelity raster manipulation and social media graphics [INDEX].</li>
+                    <li><strong>Adobe Illustrator:</strong> Scalable vector brand identity blueprints and logo design [INDEX].</li>
+                    <li><strong>Interface Styling:</strong> Custom glassmorphic sheets, responsive layout trees, and interactions.</li>
                 </ul>
             </div>
         </div>
     </section>
 
-    <!-- ==========================================================================
-         📊 ROADMAP GRID MODULES
-         ========================================================================== -->
+    <!-- 📊 LEARNING BLUEPRINT ROADMAP -->
     <section id="roadmap" class="roadmap-section">
-        <div class="section-header">
-            <h2>System Learning Blueprint</h2>
-            <p>Chronological breakdown of technical milestones accomplished during this development cycle.</p>
-        </div>
-
+        <div class="section-header"><h2>System Learning Blueprint</h2></div>
         <div class="filter-wrapper">
             <button class="filter-btn active" data-filter="all">All Modules</button>
             <button class="filter-btn" data-filter="frontend">Frontend Shells</button>
             <button class="filter-btn" data-filter="backend">Backend Core</button>
             <button class="filter-btn" data-filter="analytics">Data Analytics</button>
         </div>
-
         <div class="project-grid">
             <div class="project-card card-glass" data-category="frontend" onclick="openModal('ecommerce')">
                 <div class="card-tag">UX Architecture</div>
                 <h3>E-Commerce Interface Shell</h3>
-                <p>High-performance mock catalog rendering fluid layouts, variables control panel configurations, and flex tracking frames.</p>
                 <span class="card-link-action">Inspect Specifications →</span>
             </div>
-
             <div class="project-card card-glass" data-category="backend" onclick="openModal('taskapi')">
                 <div class="card-tag">API Core</div>
                 <h3>Secure Task Manager API</h3>
-                <p>Headless environment deploying Express route trees, token verification check gateways, and automated parameter filters.</p>
                 <span class="card-link-action">Inspect Specifications →</span>
             </div>
-
             <div class="project-card card-glass" data-category="analytics" onclick="openModal('chat')">
                 <div class="card-tag">Analytics</div>
                 <h3>Predictive Analytics Engine</h3>
-                <p>Statistical processing engine evaluating sample demographics to resolve variable distributions and aggregation arrays.</p>
                 <span class="card-link-action">Inspect Specifications →</span>
             </div>
         </div>
     </section>
 
-    <!-- ==========================================================================
-         🎓 CREDENTIALS & CERTIFICATIONS PLATFORM VIEW
-         ========================================================================== -->
+    <!-- 🎓 CERTIFICATIONS & EDUCATION -->
     <section id="credentials" class="credentials-section">
-        <div class="section-header">
-            <h2>Professional Certifications & Education</h2>
-            <p>Validated credentials spanning advanced systems design, analytical processing, and university technical foundations.</p>
-        </div>
-
+        <div class="section-header"><h2>Professional Certifications & Education</h2></div>
         <div class="credentials-grid">
             <div class="credential-card card-glass">
-                <div class="cred-icon">🎓</div>
                 <div class="cred-info">
                     <span class="cred-badge">Degree</span>
                     <h3>BS Information Technology</h3>
                     <p class="cred-issuer">Divine Word College of Laoag (2008 – 2012)</p>
-                    <p class="cred-desc">Core training in computing mechanics, algorithm architecture configurations, and database design metrics [INDEX].</p>
                 </div>
             </div>
-
             <div class="credential-card card-glass">
-                <div class="cred-icon">📊</div>
                 <div class="cred-info">
                     <span class="cred-badge">Data Science</span>
                     <h3>Data Analytics Level III</h3>
                     <p class="cred-issuer">Issued by GESTAAC INC</p>
-                    <p class="cred-desc">Practical mastery covering data cleaning, statistical filtering formulas, and automated transformation pipelines [INDEX].</p>
                 </div>
             </div>
-
             <div class="credential-card card-glass">
-                <div class="cred-icon">🎨</div>
                 <div class="cred-info">
                     <span class="cred-badge">Design</span>
                     <h3>Visual Graphic Design NC III</h3>
                     <p class="cred-issuer">TESDA – St. Gabriel International Centre</p>
-                    <p class="cred-desc">Professional credential certifying mastery in Adobe Photoshop layer compositions and Illustrator vector blue-printing [INDEX].</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ==========================================================================
-         📨 FORTIFIED CONTACT ENGINE LAYOUT
-         ========================================================================== -->
+    <!-- 📨 CONTACT SECTION (FULLY RESTORED INPUTS) -->
     <section id="contact" class="contact-section">
         <div class="contact-wrapper card-glass">
             <div class="status-badge">🟢 Core Network Pipeline Secure</div>
             <h2>Let's Build Something Great</h2>
+            <p>Based in **Laoag City, Philippines** [INDEX]. Send project parameters directly to my database cluster using the fields below!</p>
+            <form id="portfolioForm">
+                <div class="form-row">
+                    <input type="text" name="userName" placeholder="Your Profile Name" required autocomplete="name">
+                    <input type="email" name="userEmail" placeholder="Your Telemetry Email Address" required autocomplete="email">
+                </div>
+                <textarea name="userMessage" rows="5" placeholder="Transmit packet message logs or system specs here..." required></textarea>
+                <button type="submit" class="btn btn-primary form-submit" id="submitBtn">
+                    <span id="btnText">Send Signal</span>
+                    <div id="btnSpinner" class="spinner-element" style="display: none;"></div>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- 🌐 FOOTER HUB -->
+    <footer class="footer-container">
+        <p class="footer-credit">© 2026 Angelo Sambrano. Core Pipeline Secured [INDEX].</p>
+        <div class="footer-links">
+            <a href="https://github.com" target="_blank">GitHub</a>
+            <a href="#" target="_blank">LinkedIn</a>
+            <a href="/Resume.pdf" download="Gelo_Sambrano_Resume.pdf">Resume</a>
+        </div>
+    </footer>
+
+    <!-- 📡 POPUP MODAL -->
+    <div id="successPopup" class="success-popup-overlay" style="display: none;">
+        <div class="card-glass success-popup-card">
+            <div class="success-icon-ring"><span class="success-icon-symbol">📡</span></div>
+            <h3>Signal Logged Successfully</h3>
+            <p id="successPopupMessage">Your transmission packet has bypassed firewall channels and saved securely inside the cloud MongoDB Atlas database array.</p>
+            <button class="btn btn-primary" onclick="closeSuccessPopup()" style="margin-top: 1.5rem; width: 100%;">Acknowledge & Close</button>
+        </div>
+    </div>
+
+    <div id="projectModal" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-card card-glass"><div id="modalContent"></div></div>
+    </div>
+
+    <!-- 🌐 CORE SCRIPTS LINK -->
+    <script src="script.js"></script>
+</body>
+</html>
