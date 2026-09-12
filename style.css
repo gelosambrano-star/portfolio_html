@@ -485,6 +485,96 @@ input:focus, textarea:focus {
    📱 MOBILE & MOBILE RESPONSIVE CANVAS INTERFACES (MAX-WIDTH: 768px)
    ========================================================================== */
 
+/* ==========================================================================
+   📊 CORE TECHNOLOGICAL COMPETENCIES DESIGN SYSTEM
+   ========================================================================== */
+.skills-section {
+    padding: 6rem 8%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.skills-wrapper-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+}
+
+.skill-group-card {
+    padding: 2.5rem;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.skill-group-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(59, 130, 246, 0.3); /* Premium blue highlight board glow */
+}
+
+.skill-category-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.category-icon {
+    font-size: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-glass);
+    padding: 0.5rem;
+    border-radius: 10px;
+}
+
+.skill-group-card h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.cert-pill {
+    display: inline-block;
+    background: rgba(59, 130, 246, 0.12);
+    color: var(--brand-accent);
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1.5rem;
+}
+
+.skills-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.skills-list li {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    position: relative;
+    padding-left: 1.25rem;
+}
+
+/* Custom premium cyan dot indicator lines */
+.skills-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--brand-accent);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Ensure the layout stacks perfectly row-by-row on mobile viewports */
+@media screen and (max-width: 768px) {
+    .skills-wrapper-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem;
+    }
+}
 
 @media screen and (max-width: 768px) {
     
