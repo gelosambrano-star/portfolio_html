@@ -9,7 +9,7 @@
     
     <style>
         /* ==========================================================================
-           ✨ DASHBOARD DESIGN CORE ARCHITECTURE
+           ✨ DASHBOARD DESIGN CORE ARCHITECTURE (NO EXTERNAL DEPENDENCIES)
            ========================================================================== */
         :root {
             --bg-main: #0a0f1d;
@@ -31,6 +31,9 @@
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             line-height: 1.6;
             padding: 3rem 8%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .card-glass {
@@ -43,8 +46,51 @@
         }
 
         /* ==========================================================================
-           🧩 MAIN INTERFACE HEADER BAR COMPONENTS
+           🔒 EMBEDDED SECURE LOGIN SCREEN INTERFACE
            ========================================================================== */
+        .login-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: var(--bg-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 1rem;
+        }
+
+        .login-card {
+            max-width: 400px;
+            width: 100%;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .login-card h2 { margin-bottom: 0.5rem; font-size: 1.75rem; font-weight: 800; }
+        .login-card p { color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem; }
+        
+        .login-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-glass);
+            padding: 1rem;
+            color: white;
+            border-radius: 8px;
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 1.25rem;
+            outline: none;
+        }
+        .login-input:focus { border-color: var(--brand-accent); }
+
+        /* ==========================================================================
+           🧩 MAIN DASHBOARD CONTENT (HIDDEN BY DEFAULT)
+           ========================================================================== */
+        #dashboardContent {
+            display: none;
+            width: 100%;
+        }
+
         .console-header {
             display: flex;
             justify-content: space-between;
@@ -89,6 +135,8 @@
             border: none;
         }
 
+        .btn-primary { background: var(--brand-accent); color: white; width: 100%; }
+        .btn-primary:hover { background: #2563eb; }
         .btn-secondary { background: rgba(255, 255, 255, 0.05); color: var(--text-primary); border: 1px solid var(--border-glass); }
         .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--text-secondary); }
         .btn-danger { background: var(--danger-glow); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
@@ -111,6 +159,7 @@
         .sender-name { font-weight: 700; color: var(--brand-accent); }
         .message-body { font-size: 1.05rem; color: var(--text-primary); margin-top: 0.5rem; font-weight: 500; }
         .status-empty { text-align: center; padding: 4rem; color: var(--text-secondary); font-size: 1.1rem; }
+        .error-text { color: var(--danger-accent); font-size: 0.9rem; margin-top: -0.5rem; margin-bottom: 1rem; display: none; }
 
         @media screen and (max-width: 768px) {
             body { padding: 2rem 5%; }
@@ -124,31 +173,76 @@
 </head>
 <body>
 
-    <!-- 📊 MAIN DASHBOARD AREA (OPEN ACCESS) -->
-    <header class="console-header">
-        <h1>
-            Inbound Signal Console
-            <span id="counterBadge" class="card-glass counter-badge">Counting...</span>
-        </h1>
-        <div class="header-actions">
-            <a href="/" class="btn btn-secondary">← Back to Site</a>
+    <!-- 🔒 VISUAL ACCESS LOCK PANEL OVERLAY -->
+    <div id="loginOverlay" class="login-overlay">
+        <div class="card-glass login-card">
+            <h2>Console Lock</h2>
+            <p>Security Access Credentials Required</p>
+            <form id="loginForm" onsubmit="handleLoginSubmit(event)">
+                <input type="password" id="passwordInput" class="login-input" placeholder="Enter Access Key Password" required autocomplete="off">
+                <div id="loginError" class="error-text">❌ Invalid Master Password Submitted</div>
+                <button type="submit" class="btn btn-primary">Unlock System</button>
+            </form>
         </div>
-    </header>
+    </div>
 
-    <main>
-        <div id="messagesContainer" class="messages-stack">
-            <!-- Stored MongoDB data logs will load here -->
-        </div>
-    </main>
+    <!-- 📊 SECURE OPERATION VIEW CONTAINER -->
+    <div id="dashboardContent">
+        <header class="console-header">
+            <h1>
+                Inbound Signal Console
+                <span id="counterBadge" class="card-glass counter-badge">Counting...</span>
+            </h1>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="lockConsoleSession()">Lock Console</button>
+                <a href="/" class="btn btn-secondary">← Back to Site</a>
+            </div>
+        </header>
+
+        <main>
+            <div id="messagesContainer" class="messages-stack">
+                <!-- Data dynamically streamed here -->
+            </div>
+        </main>
+    </div>
 
     <!-- ==========================================================================
-         🧠 AUTOMATED CORE FETCH ROUTINES
+         🧠 CORE DYNAMIC DATABASE LINK SCRIPTS
          ========================================================================== -->
     <script>
-        // Fires immediately upon loading the page view
+        // Check session credentials automatically on immediate boot load
         window.addEventListener('DOMContentLoaded', () => {
-            fetchDatabaseMessages();
+            if (sessionStorage.getItem("adminAuthToken") === "true") {
+                unlockDashboardView();
+            }
         });
+
+        function handleLoginSubmit(event) {
+            event.preventDefault();
+            const inputField = document.getElementById('passwordInput');
+            const errorText = document.getElementById('loginError');
+            
+            // ✅ Password verification match loop (Matches GelloSecretDev2026 accurately)
+            if (inputField.value === "GelloSecretDev2026") {
+                sessionStorage.setItem("adminAuthToken", "true");
+                unlockDashboardView();
+            } else {
+                errorText.style.display = "block";
+                inputField.value = '';
+                inputField.focus();
+            }
+        }
+
+        function unlockDashboardView() {
+            document.getElementById('loginOverlay').style.display = "none";
+            document.getElementById('dashboardContent').style.display = "block";
+            fetchDatabaseMessages();
+        }
+
+        function lockConsoleSession() {
+            sessionStorage.removeItem("adminAuthToken");
+            window.location.reload();
+        }
 
         function fetchDatabaseMessages() {
             const container = document.getElementById('messagesContainer');
@@ -158,79 +252,3 @@
 
             fetch('/api/messages')
                 .then(res => {
-                    if (!res.ok) throw new Error(`Network status error: ${res.status}`);
-                    return res.json();
-                })
-                .then(messages => {
-                    container.innerHTML = '';
-                    
-                    // Automatically map array count to title badge
-                    const counterBadge = document.getElementById('counterBadge');
-                    if (counterBadge) {
-                        counterBadge.textContent = `Active Signals: ${messages ? messages.length : 0}`;
-                    }
-                    
-                    if (!messages || messages.length === 0) {
-                        container.innerHTML = '<div class="card-glass status-empty">💾 Database is completely clear. No active packet transmissions found.</div>';
-                        return;
-                    }
-
-                    messages.reverse().forEach(msg => {
-                        const card = document.createElement('div');
-                        card.className = 'card-glass message-card';
-                        const timestamp = msg.createdAt ? new Date(msg.createdAt).toLocaleString() : new Date().toLocaleString();
-
-                        card.innerHTML = `
-                            <div class="message-content">
-                                <div class="message-meta">
-                                    <span>From: <span class="sender-name">${msg.name || 'Anonymous'}</span> (${msg.email || 'N/A'})</span>
-                                    <span>Received: ${timestamp}</span>
-                                </div>
-                                <div class="message-body">"${msg.message || ''}"</div>
-                            </div>
-                            <button class="btn btn-danger" onclick="eraseSignalEntry('${msg._id}', this)">
-                                Erase Signal
-                            </button>
-                        `;
-                        container.appendChild(card);
-                    });
-                })
-                .catch(err => {
-                    console.error("Fetch failure:", err);
-                    container.innerHTML = '<div class="card-glass status-empty" style="color:#f87171;">❌ Core Pipeline Link Failure. Unable to synchronize dataset arrays.</div>';
-                });
-        }
-
-        function eraseSignalEntry(messageId, buttonElement) {
-            if (!confirm("Are you absolutely certain you want to permanently delete this message record?")) {
-                return;
-            }
-
-            fetch(`/api/messages/${messageId}`, { method: 'DELETE' })
-            .then(res => {
-                if (!res.ok) throw new Error(`Server rejected transaction.`);
-                return res.json();
-            })
-            .then(result => {
-                if (result.success) {
-                    const targetedCard = buttonElement.closest('.message-card');
-                    if (targetedCard) {
-                        targetedCard.style.opacity = '0';
-                        targetedCard.style.transform = 'translateY(15px)';
-                        setTimeout(() => {
-                            targetedCard.remove();
-                            fetchDatabaseMessages();
-                        }, 300);
-                    }
-                } else {
-                    alert(`Operational Error: ${result.message}`);
-                }
-            })
-            .catch(err => {
-                console.error("Deletion crash details:", err);
-                alert("Unable to transmit destruction data.");
-            });
-        }
-    </script>
-</body>
-</html>
