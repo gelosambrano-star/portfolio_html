@@ -78,10 +78,24 @@
             border-radius: 8px;
             font-size: 1rem;
             text-align: center;
-            margin-bottom: 1.25rem;
+            margin-bottom: 1rem;
             outline: none;
         }
         .login-input:focus { border-color: var(--brand-accent); }
+
+        /* 👁️ Show password checkbox label tracking container markup styles */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            user-select: none;
+        }
+        .toggle-container input { cursor: pointer; }
 
         /* ==========================================================================
            🧩 MAIN DASHBOARD CONTENT (HIDDEN BY DEFAULT)
@@ -180,6 +194,13 @@
             <p>Security Access Credentials Required</p>
             <form id="loginForm" onsubmit="handleLoginSubmit(event)">
                 <input type="password" id="passwordInput" class="login-input" placeholder="Enter Access Key Password" required autocomplete="off">
+                
+                <!-- 👁️ THE DYNAMIC SHOW PASSWORD TOGGLE ELEMENT PANEL -->
+                <label class="toggle-container">
+                    <input type="checkbox" id="showPasswordCheckbox" onclick="togglePasswordVisibility()">
+                    <span>Show Password</span>
+                </label>
+
                 <div id="loginError" class="error-text">❌ Invalid Master Password Submitted</div>
                 <button type="submit" class="btn btn-primary">Unlock System</button>
             </form>
@@ -217,38 +238,15 @@
             }
         });
 
-        function handleLoginSubmit(event) {
-            event.preventDefault();
-            const inputField = document.getElementById('passwordInput');
-            const errorText = document.getElementById('loginError');
-            
-            // ✅ Password verification match loop (Matches GelloSecretDev2026 accurately)
-            if (inputField.value === "GelloSecretDev2026") {
-                sessionStorage.setItem("adminAuthToken", "true");
-                unlockDashboardView();
-            } else {
-                errorText.style.display = "block";
-                inputField.value = '';
-                inputField.focus();
+        // 👁️ VISIBILITY DYNAMIC FIELD TRANSLATOR INTERPOLATOR ROUTINE
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('passwordInput');
+            const checkbox = document.getElementById('showPasswordCheckbox');
+            if (passwordInput && checkbox) {
+                // Flips the layout target property dynamically between masked and clear text modes
+                passwordInput.type = checkbox.checked ? "text" : "password";
             }
         }
 
-        function unlockDashboardView() {
-            document.getElementById('loginOverlay').style.display = "none";
-            document.getElementById('dashboardContent').style.display = "block";
-            fetchDatabaseMessages();
-        }
-
-        function lockConsoleSession() {
-            sessionStorage.removeItem("adminAuthToken");
-            window.location.reload();
-        }
-
-        function fetchDatabaseMessages() {
-            const container = document.getElementById('messagesContainer');
-            if (!container) return;
-
-            container.innerHTML = '<p class="status-empty">Connecting to MongoDB cloud pipeline clusters...</p>';
-
-            fetch('/api/messages')
-                .then(res => {
+        function handleLoginSubmit(event) {
+            event.preventDefault();
