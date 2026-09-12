@@ -1,5 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Message Console</title>
+    <!-- Favicon Shortcut Patch: Keeps inspect console diagnostics clean -->
+    <link rel="icon" href="data:,">
+    
+    <style>
+        /* ==========================================================================
+           ✨ DASHBOARD DESIGN CORE ARCHITECTURE
+           ========================================================================== */
+        :root {
+            --bg-main: #0a0f1d;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --card-surface: rgba(17, 24, 39, 0.45);
+            --border-glass: rgba(255, 255, 255, 0.06);
+            --brand-accent: #3b82f6;
+            --danger-accent: #ef4444;
+            --danger-glow: rgba(239, 68, 68, 0.15);
+            --shadow-blur: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            padding: 3rem 8%;
+            min-height: 100vh;
+        }
+
+        .card-glass {
+            background: var(--card-surface);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            box-shadow: var(--shadow-blur);
+        }
+
+        /* ==========================================================================
+           🧩 MAIN INTERFACE HEADER BAR COMPONENTS
+           ========================================================================== */
+        .console-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .console-header h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .counter-badge {
+            font-size: 0.9rem;
+            padding: 0.3rem 0.8rem;
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--brand-accent);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .header-actions { display: flex; gap: 1rem; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.6rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-secondary { background: rgba(255, 255, 255, 0.05); color: var(--text-primary); border: 1px solid var(--border-glass); }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--text-secondary); }
+        .btn-danger { background: var(--danger-glow); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .btn-danger:hover { background: rgba(239, 68, 68, 0.25); border-color: var(--danger-accent); }
+
+        .messages-stack { display: flex; flex-direction: column; gap: 1.5rem; max-width: 1000px; margin: 0 auto; width: 100%; }
+        .message-card { padding: 2rem; display: flex; justify-content: space-between; align-items: center; gap: 2rem; transition: all 0.3s ease; }
+        .message-content { flex-grow: 1; }
+        
+        .message-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            padding-bottom: 0.5rem;
+        }
+
+        .sender-name { font-weight: 700; color: var(--brand-accent); }
+        .message-body { font-size: 1.05rem; color: var(--text-primary); margin-top: 0.5rem; font-weight: 500; }
+        .status-empty { text-align: center; padding: 4rem; color: var(--text-secondary); font-size: 1.1rem; }
+
+        @media screen and (max-width: 768px) {
+            .console-header { flex-direction: column; align-items: flex-start; }
+            .header-actions { width: 100%; }
+            .header-actions .btn { flex-grow: 1; }
+            .message-card { flex-direction: column; align-items: flex-start; gap: 1.25rem; padding: 1.5rem; }
+            .btn-danger { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 📊 MAIN DASHBOARD VIEW CONTAINER -->
+    <div id="dashboardContent" style="display: block;">
+        <header class="console-header">
+            <h1>
+                Inbound Signal Console
+                <span id="counterBadge" class="card-glass counter-badge">Active Signals: Fetching...</span>
+            </h1>
+            <div class="header-actions">
+                <a href="/" class="btn btn-secondary">← Back to Site</a>
+            </div>
+        </header>
+
+        <main>
+            <div id="messagesContainer" class="messages-stack">
+                <!-- Data dynamically streamed here -->
+            </div>
+        </main>
+    </div>
+
     <!-- ==========================================================================
-         🧠 DATA STREAM UTILITIES (FULLY REPAIRED & CLOSED)
+         🧠 CORE AUTOMATED DATA STREAM UTILITIES
          ========================================================================== -->
     <script>
         function fetchDatabaseMessages() {
@@ -23,7 +168,7 @@
                         return;
                     }
 
-                    // Loop through and build each message card card container row cleanly
+                    // Sort database items chronologically
                     messages.reverse().forEach(msg => {
                         const card = document.createElement('div');
                         card.className = 'card-glass message-card';
@@ -41,17 +186,17 @@
                                 Erase Signal
                             </button>
                         `;
-                        container.appendChild(card); // ✅ FIXED: Appends the element securely to the DOM canvas
+                        container.appendChild(card);
                     });
                 })
                 .catch(err => {
-                    console.error("Fetch failure error info:", err);
+                    console.error("Fetch failure:", err);
                     container.innerHTML = '<div class="card-glass status-empty" style="color:#f87171;">❌ Core Pipeline Link Failure. Unable to synchronize dataset arrays.</div>';
                 });
         }
 
         function eraseSignalEntry(messageId, buttonElement) {
-            if (!confirm("Are you absolutely certain you want to permanently delete this message record?")) {
+            if (!confirm("Are you absolutely certain you want to permanently delete this message record out of the cloud database?")) {
                 return;
             }
 
@@ -73,12 +218,12 @@
                 }
             })
             .catch(err => {
-                console.error("Deletion crash details:", err);
-                alert("Unable to transmit destruction data.");
+                console.error("Deletion sync channel crash details:", err);
+                alert("Unable to transmit destruction data fields to cloud gateway node.");
             });
         }
 
-        // Auto-run trigger parameters immediately on load sequences
+        // Initialize runtime sequence safe triggers instantly on load
         if (document.readyState === "loading") {
             document.addEventListener("DOMContentLoaded", fetchDatabaseMessages);
         } else {
