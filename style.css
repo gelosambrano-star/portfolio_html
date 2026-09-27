@@ -639,3 +639,16 @@ input:focus, textarea:focus {
         gap: 1rem;
     }
 } /* <-- ✅ PERFECTLY CLOSED! Everything is organized and secure. */
+/* Gives your budget tracker link card button a bright, clickable highlight color */
+.launch-link, a[class*="launch"] {
+  color: #3b82f6 !important; /* Premium bright blue highlight */
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.launch-link:hover, a[class*="launch"]:hover {
+  color: #60a5fa !important; /* Brighter blue glow on mouse hover */
+  text-decoration: underline;
+}
+
